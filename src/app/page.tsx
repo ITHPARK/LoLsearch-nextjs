@@ -14,7 +14,7 @@ const Home = () => {
           priority
         />
         <ol>
-          <li>
+          <li className="text-3xl font-bold underline bg-[#000]">
             aGet started by editing <code>src/app/page.tsx</code>.
           </li>
           <li>Save and see your changes instantly.</li>
