@@ -1,13 +1,20 @@
 'uss client'
 
-import Flex from '@/components/Shared/Flex'
+import Flex from './Flex'
+import React from 'react'
 
 const NavBar = () => {
   return (
-    <Flex gap={10} justify="center">
-      <Flex justify="between">
+    <Flex justify="center" className="py-[10px] h-[60px] ">
+      <Flex
+        justify="between"
+        align="center"
+        className="max-w-[1200px] w-full h-full"
+      >
+        <h1>Logo</h1>
+
         <Flex as="ul">
-          <li></li>
+          <li>로그인</li>
         </Flex>
       </Flex>
     </Flex>

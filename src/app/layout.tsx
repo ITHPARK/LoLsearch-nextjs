@@ -1,7 +1,7 @@
 import './globals.css'
 
 import type { Metadata } from 'next'
-import NavBar from '@/components/Shared/NavBar'
+import NavBar from '@/components/shared/NavBar'
 
 export const metadata: Metadata = {
   title: 'League of Legends',
