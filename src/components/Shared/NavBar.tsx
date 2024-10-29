@@ -5,7 +5,10 @@ import React from 'react'
 
 const NavBar = () => {
   return (
-    <Flex justify="center" className="py-[10px] h-[60px] ">
+    <Flex
+      justify="center"
+      className="w-full py-[10px] h-[60px] bg-darkGray fixed left-0 top-0 border-solid border-b-[1px] border-white"
+    >
       <Flex
         justify="between"
         align="center"

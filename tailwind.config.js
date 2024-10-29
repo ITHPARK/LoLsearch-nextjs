@@ -1,6 +1,7 @@
 // tailwind.config.js
 /** @type {import('tailwindcss').Config} */
 module.exports = {
+  mode: 'jit', // JIT 모드 활성화
   content: [
     './src/app/**/*.{js,ts,jsx,tsx}',
     './src/pages/**/*.{js,ts,jsx,tsx}',
@@ -8,7 +9,9 @@ module.exports = {
   ],
   theme: {
     extend: {
-      darkGary: '#363742',
+      colors: {
+        darkGray: '#363742',
+      },
     },
   },
   plugins: [],
