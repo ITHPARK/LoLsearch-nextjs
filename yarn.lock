@@ -284,6 +284,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@react-icons/all-files@npm:^4.1.0":
+  version: 4.1.0
+  resolution: "@react-icons/all-files@npm:4.1.0"
+  peerDependencies:
+    react: "*"
+  checksum: 10c0/6327623b857ba2a9fdf835f2e7029feec7acdd53dc14163085789518d7e1323deb7db649b660d3bad3991285e8408238ad4d09c37b9a0ba7d2601dd74ac0ae56
+  languageName: node
+  linkType: hard
+
 "@rtsao/scc@npm:^1.1.0":
   version: 1.1.0
   resolution: "@rtsao/scc@npm:1.1.0"
@@ -2785,6 +2794,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "next-lol@workspace:."
   dependencies:
+    "@react-icons/all-files": "npm:^4.1.0"
     "@types/node": "npm:^20"
     "@types/react": "npm:^18.3.12"
     "@types/react-dom": "npm:^18.3.1"

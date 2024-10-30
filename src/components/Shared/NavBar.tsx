@@ -2,6 +2,12 @@
 
 import Flex from './Flex'
 import React from 'react'
+import { Kanit } from 'next/font/google'
+
+const fontKanit = Kanit({
+  weight: ['700'],
+  subsets: ['latin'],
+})
 
 const NavBar = () => {
   return (
@@ -12,9 +18,9 @@ const NavBar = () => {
       <Flex
         justify="between"
         align="center"
-        className="max-w-[1200px] w-full h-full"
+        className="max-w-[1080px] w-full h-full"
       >
-        <h1>Logo</h1>
+        <h1 className={`${fontKanit.className} text-[36px] `}>LoLs</h1>
 
         <Flex as="ul">
           <li>로그인</li>

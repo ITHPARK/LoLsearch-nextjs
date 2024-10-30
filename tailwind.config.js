@@ -12,7 +12,21 @@ module.exports = {
       colors: {
         darkGray: '#363742',
       },
+      fontFamily: {
+        kanit: ['Kanit', 'serif'],
+      },
     },
   },
-  plugins: [],
+  plugins: [
+    function ({ addUtilities }) {
+      addUtilities({
+        '.font-optical-sizing-auto': {
+          'font-optical-sizing': 'auto',
+        },
+        '.font-elsh-0': {
+          'font-variation-settings': '"ELSH" 0',
+        },
+      })
+    },
+  ],
 }
