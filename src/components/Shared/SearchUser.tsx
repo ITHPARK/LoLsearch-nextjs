@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import Flex from './Flex'
 import { IoSearch } from '@react-icons/all-files/io5/IoSearch'
 import { useRouter } from 'next/navigation'
@@ -14,7 +14,7 @@ const SearchUser = () => {
     setSearch(e.target.value)
   }
 
-  const handleClickSearch = () => {
+  const checkSearch = () => {
     if (search != null && search.includes('#')) {
       const [name, tag] = search.split('#') as string[]
       router.push(`/summoners/${name}-${tag}`)
@@ -23,14 +23,27 @@ const SearchUser = () => {
     }
   }
 
+  const handleClickSearch = () => {
+    checkSearch()
+  }
+
+  //KeyboardEvent =  키보드 이벤트가 발생할 때 제공되는 이벤트 객체의 타입
+  const handleKeyDouwn = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    //누른 키가 엔터라면
+    if (e.key === 'Enter') {
+      checkSearch()
+    }
+  }
+
   return (
     <Flex className="px-[15px] py-[8px] mx-auto w-[500px] bg-white rounded-[25px]  overflow-hidden">
       <input
         type="text"
         className=" w-full block outline-none"
-        placeholder="소환사 이름+태그"
+        placeholder="소환사 이름+#태그"
         value={search}
         onChange={handleChangeValue}
+        onKeyDown={handleKeyDouwn}
       />
       <button
         type="button"

@@ -15,7 +15,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className="pt-[60px]">
+      <body className="pt-[60px]" suppressHydrationWarning>
         <NavBar />
         <div className="mx-auto w-full max-w-[1080px]">{children}</div>
       </body>
