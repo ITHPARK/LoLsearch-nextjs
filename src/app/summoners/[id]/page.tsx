@@ -28,10 +28,10 @@ const Summoner = () => {
       const [gameName, tagLine] = (id as string).split('-')
 
       //유저의 닉네임과 태그를 추출해서 api를 요청
-      const fetchGameInfo = async () => {
+      const fetchSummoner = async () => {
         try {
           const response = await axios.get(
-            `/api/summoner?gameName=${gameName}&tagLine=${tagLine}`,
+            `/api/account/by-riot-id/?gameName=${gameName}&tagLine=${tagLine}`,
           )
           setSummonerInfo({
             summonerName: response.data.gameName,
@@ -46,14 +46,38 @@ const Summoner = () => {
               setIsError(error.response?.data.message)
             }
           } else {
-            console.log('오류', error)
+            console.log(error)
           }
         }
       }
 
-      fetchGameInfo()
+      fetchSummoner()
     }
   }, [id])
+
+  useEffect(() => {
+    const fetchSummonerInfo = async () => {
+      try {
+        const response = await axios.get(
+          `/api/account/by-puuid/?puuid=${summonerInfo.summonerPuuid}`,
+        )
+
+        console.log(response)
+
+        return response
+      } catch (error) {
+        if (axios.isAxiosError(error)) {
+          console.log(error)
+        }
+
+        console.log(error)
+      }
+    }
+
+    if (summonerInfo.summonerPuuid) {
+      fetchSummonerInfo()
+    }
+  }, [summonerInfo.summonerPuuid])
 
   useEffect(() => {
     console.log('summonerInfo state:', summonerInfo) // 상태가 업데이트되는지 확인

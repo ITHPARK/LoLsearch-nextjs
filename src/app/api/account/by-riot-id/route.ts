@@ -18,7 +18,11 @@ export const GET = async (req: NextRequest) => {
       )
     }
 
-    const encodedGameName = encodeURIComponent(gameName) // 인코딩된 유저 아이디 값ㄴ
+    const encodedGameName = encodeURIComponent(gameName) // 인코딩된 유저 아이디 값
+
+    console.log(
+      `${asia_api_url}riot/account/v1/accounts/by-riot-id/${encodedGameName}/${tagLine}?api_key=${apiKey}`,
+    )
 
     const response = await axios.get(
       `${asia_api_url}riot/account/v1/accounts/by-riot-id/${encodedGameName}/${tagLine}?api_key=${apiKey}`,
