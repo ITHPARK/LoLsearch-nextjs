@@ -5,11 +5,14 @@ import { useParams } from 'next/navigation'
 import axios from 'axios'
 import ContentTop from '@/components/shared/ContentTop'
 import Text from '@/components/shared/Text'
+import ProfileBox from '@/components/shared/ProfileBox'
 
 interface SummonerProps {
   summonerName: string
   summonerPuuid: string
   summonerTag: string
+  summonerLevel: number | null
+  summonerIconId: number | null
 }
 
 const Summoner = () => {
@@ -20,6 +23,8 @@ const Summoner = () => {
     summonerName: '',
     summonerPuuid: '',
     summonerTag: '',
+    summonerLevel: null,
+    summonerIconId: null,
   })
 
   useEffect(() => {
@@ -33,11 +38,12 @@ const Summoner = () => {
           const response = await axios.get(
             `/api/account/by-riot-id/?gameName=${gameName}&tagLine=${tagLine}`,
           )
-          setSummonerInfo({
+          setSummonerInfo((prev) => ({
+            ...prev, //이전 정보에서 3개만 수정
             summonerName: response.data.gameName,
             summonerPuuid: response.data.puuid,
             summonerTag: response.data.tagLine,
-          })
+          }))
         } catch (error: unknown) {
           //axios 에러인지 확인
           if (axios.isAxiosError(error)) {
@@ -59,12 +65,14 @@ const Summoner = () => {
     const fetchSummonerInfo = async () => {
       try {
         const response = await axios.get(
-          `/api/account/by-puuid/?puuid=${summonerInfo.summonerPuuid}`,
+          `/api/summoners/by-puuid/?puuid=${summonerInfo.summonerPuuid}`,
         )
 
-        console.log(response)
-
-        return response
+        setSummonerInfo((prev) => ({
+          ...prev, //이전 정보에서 3개만 수정
+          summonerLevel: response.data.summonerLevel,
+          summonerIconId: response.data.profileIconId,
+        }))
       } catch (error) {
         if (axios.isAxiosError(error)) {
           console.log(error)
@@ -91,12 +99,25 @@ const Summoner = () => {
   return (
     <>
       <ContentTop>
-        <Text size="t3" weight="bold" className="mr-[5px]">
-          {summonerInfo?.summonerName}
-        </Text>
-        <Text size="t2" weight="light">
-          #{summonerInfo?.summonerTag}
-        </Text>
+        <ProfileBox size="medium">
+          <Text
+            size="t1"
+            className="px-[5px] py-[3px] absolute right-[5px] bottom-[5px] bg-[#000] rounded-[3px]"
+          >
+            {summonerInfo.summonerLevel}
+          </Text>
+        </ProfileBox>
+        {summonerInfo?.summonerName && (
+          <>
+            <Text size="t3" weight="bold" className="mr-[5px]">
+              {summonerInfo?.summonerName}
+            </Text>
+            <Text size="t2" weight="light">
+              #{summonerInfo?.summonerTag}
+            </Text>
+          </>
+        )}
+
         <div className=""></div>
       </ContentTop>
     </>
