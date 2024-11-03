@@ -5,6 +5,7 @@ import { useParams } from 'next/navigation'
 import axios from 'axios'
 import ContentTop from '@/components/shared/ContentTop'
 import Text from '@/components/shared/Text'
+import Flex from '@/components/shared/Flex'
 import ProfileBox from '@/components/shared/ProfileBox'
 
 interface SummonerProps {
@@ -99,24 +100,26 @@ const Summoner = () => {
   return (
     <>
       <ContentTop>
-        <ProfileBox size="medium">
-          <Text
-            size="t1"
-            className="px-[5px] py-[3px] absolute right-[5px] bottom-[5px] bg-[#000] rounded-[3px]"
-          >
-            {summonerInfo.summonerLevel}
-          </Text>
-        </ProfileBox>
-        {summonerInfo?.summonerName && (
-          <>
-            <Text size="t3" weight="bold" className="mr-[5px]">
-              {summonerInfo?.summonerName}
+        <Flex align="end" className="gap-[10px]">
+          <ProfileBox size="medium">
+            <Text
+              size="t1"
+              className="px-[5px] py-[3px] absolute right-[5px] bottom-[5px] bg-[#000] rounded-[3px]"
+            >
+              {summonerInfo.summonerLevel}
             </Text>
-            <Text size="t2" weight="light">
-              #{summonerInfo?.summonerTag}
-            </Text>
-          </>
-        )}
+          </ProfileBox>
+          {summonerInfo?.summonerName && (
+            <Flex align="end" className="gap-[5px]">
+              <Text size="t3" weight="bold" className="mr-[5px]">
+                {summonerInfo?.summonerName}
+              </Text>
+              <Text size="t2" weight="light">
+                #{summonerInfo?.summonerTag}
+              </Text>
+            </Flex>
+          )}
+        </Flex>
 
         <div className=""></div>
       </ContentTop>

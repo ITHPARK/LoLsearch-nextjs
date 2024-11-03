@@ -1,0 +1,52 @@
+'use client'
+import React from 'react'
+import { store } from '@/remote/firebase'
+import { doc, setDoc } from 'firebase/firestore'
+
+const Test = () => {
+  const uploadJson = async () => {
+    const fileInput = document.getElementById('jsonFile') as HTMLInputElement
+    const file = fileInput?.files?.[0]
+    console.log(file)
+
+    if (file) {
+      const reader = new FileReader()
+
+      reader.onload = async (e) => {
+        try {
+          const jsonData = JSON.parse(e.target?.result as string) // JSON 파일 파싱
+          const profileIcons = jsonData.data // data 속성 추출
+
+          // profileIcons 객체의 각 아이콘에 대해 Firestore에 추가
+          for (const item in profileIcons) {
+            if (profileIcons.hasOwnProperty(item)) {
+              // profileIcons의 속성 검사
+              const iconData = profileIcons[item] // 아이콘 데이터 가져오기
+              console.log(iconData)
+              try {
+                // Firestore의 `profileIcons` 컬렉션에 각 아이콘을 문서로 추가
+                await setDoc(doc(store, 'profileIcons', item), iconData)
+                console.log(`Added icon with ID: ${item}`)
+              } catch (error) {
+                console.error(`Error adding icon with ID: ${item}`, error)
+              }
+            }
+          }
+        } catch (error) {
+          console.error('Error parsing JSON file', error)
+        }
+      }
+
+      reader.readAsText(file) // 파일 읽기 시작
+    }
+  }
+
+  return (
+    <div>
+      <input type="file" id="jsonFile" />
+      <button onClick={uploadJson}>Upload JSON</button>{' '}
+    </div>
+  )
+}
+
+export default Test
