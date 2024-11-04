@@ -7,6 +7,8 @@ import ContentTop from '@/components/shared/ContentTop'
 import Text from '@/components/shared/Text'
 import Flex from '@/components/shared/Flex'
 import ProfileBox from '@/components/shared/ProfileBox'
+import ImageBox from '@/components/shared/ImageBox'
+import MatchList from '@/components/matches/MatchList'
 
 interface SummonerProps {
   summonerName: string
@@ -27,6 +29,45 @@ const Summoner = () => {
     summonerLevel: null,
     summonerIconId: null,
   })
+
+  const [summonerGameRecord, setSummonerGameRecord] = useState([]) //소환사 게임 정보
+
+  const fetchSummonerInfo = async () => {
+    //소환사 레벨과 아이콘 정보를 가져오는 함수
+    try {
+      const response = await axios.get(
+        `/api/summoners/by-puuid/?puuid=${summonerInfo.summonerPuuid}`,
+      )
+
+      setSummonerInfo((prev) => ({
+        ...prev, //이전 정보에서 3개만 수정
+        summonerLevel: response.data.summonerLevel,
+        summonerIconId: response.data.profileIconId,
+      }))
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        console.log(error)
+      }
+
+      console.log(error)
+    }
+  }
+
+  const fetchMatchData = async () => {
+    try {
+      const matchResponse = await axios.get(
+        `/api/match/matches/?puuid=${summonerInfo.summonerPuuid}`,
+      )
+
+      setSummonerGameRecord(matchResponse.data)
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        console.log(error)
+      }
+
+      console.log(error)
+    }
+  }
 
   useEffect(() => {
     if (id) {
@@ -62,35 +103,17 @@ const Summoner = () => {
     }
   }, [id])
 
+  //puuid로 데이터(아이콘 정보, 레벨) 추가
   useEffect(() => {
-    const fetchSummonerInfo = async () => {
-      try {
-        const response = await axios.get(
-          `/api/summoners/by-puuid/?puuid=${summonerInfo.summonerPuuid}`,
-        )
-
-        setSummonerInfo((prev) => ({
-          ...prev, //이전 정보에서 3개만 수정
-          summonerLevel: response.data.summonerLevel,
-          summonerIconId: response.data.profileIconId,
-        }))
-      } catch (error) {
-        if (axios.isAxiosError(error)) {
-          console.log(error)
-        }
-
-        console.log(error)
-      }
-    }
-
     if (summonerInfo.summonerPuuid) {
       fetchSummonerInfo()
+      fetchMatchData()
     }
   }, [summonerInfo.summonerPuuid])
 
   useEffect(() => {
-    console.log('summonerInfo state:', summonerInfo) // 상태가 업데이트되는지 확인
-  }, [summonerInfo])
+    console.log(summonerGameRecord)
+  }, [summonerGameRecord])
 
   if (isError.length > 0) {
     //에러시 메세지 출력
@@ -102,6 +125,9 @@ const Summoner = () => {
       <ContentTop>
         <Flex align="end" className="gap-[10px]">
           <ProfileBox size="medium">
+            <ImageBox
+              src={`http://ddragon.leagueoflegends.com/cdn/10.11.1/img/profileicon/${summonerInfo.summonerIconId}.png`}
+            />
             <Text
               size="t1"
               className="px-[5px] py-[3px] absolute right-[5px] bottom-[5px] bg-[#000] rounded-[3px]"
@@ -120,9 +146,9 @@ const Summoner = () => {
             </Flex>
           )}
         </Flex>
-
-        <div className=""></div>
       </ContentTop>
+
+      <MatchList matchList={summonerGameRecord} />
     </>
   )
 }

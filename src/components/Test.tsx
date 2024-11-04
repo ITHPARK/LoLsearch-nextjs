@@ -1,9 +1,26 @@
 'use client'
 import React from 'react'
 import { store } from '@/remote/firebase'
-import { doc, setDoc } from 'firebase/firestore'
+import { doc, setDoc, getDoc } from 'firebase/firestore'
 
 const Test = () => {
+  async function checkConnection() {
+    try {
+      const testDocRef = doc(store, 'your-collection-name', 'test-document-id')
+      const testDoc = await getDoc(testDocRef)
+
+      if (testDoc.exists()) {
+        console.log('Firestore와 연결되었습니다:', testDoc.data())
+      } else {
+        console.log('Firestore에 연결되었지만, 문서가 없습니다.')
+      }
+    } catch (error) {
+      console.error('Firestore 연결 오류:', error)
+    }
+  }
+
+  checkConnection()
+
   const uploadJson = async () => {
     const fileInput = document.getElementById('jsonFile') as HTMLInputElement
     const file = fileInput?.files?.[0]

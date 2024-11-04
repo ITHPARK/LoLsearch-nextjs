@@ -50,7 +50,7 @@ const Flex: React.FC<FlexProps> = ({
         'flex',
         align ? flexAlign[align] : '',
         justify ? flexJustify[justify] : '',
-        direction ? flexDirection[direction] : '',
+        direction ? flexDirection[direction as keyof typeof flexDirection] : '', // flex-direction에서 row와 col만 사용하도록 타입 지정
         className,
       )}
     >
