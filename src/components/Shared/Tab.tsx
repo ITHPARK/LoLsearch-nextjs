@@ -27,7 +27,7 @@ const Tab = ({ labels, components }: TabComponentProps) => {
             <button
               key={index}
               onClick={() => setFocusTab(Object.keys(components)[index])}
-              className={`px-[15px] py-[10px] bg-[#363742] rounded-tl-[5px] rounded-tr-[5px]  ${focusTab == Object.keys(components)[index] ? focusColor['focused'] : focusColor['unFocused']}  `}
+              className={`px-[15px] py-[10px]  rounded-tl-[5px] rounded-tr-[5px] ${focusTab == Object.keys(components)[index] ? focusColor.focused : focusColor.unFocused}  `}
             >
               {label}
             </button>

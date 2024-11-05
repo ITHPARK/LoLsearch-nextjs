@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState } from 'react'
+import React, { useState, useCallback } from 'react'
 import Flex from './Flex'
 import { IoSearch } from '@react-icons/all-files/io5/IoSearch'
 import { useRouter } from 'next/navigation'
@@ -14,18 +14,18 @@ const SearchUser = () => {
     setSearch(e.target.value)
   }
 
-  const checkSearch = () => {
+  const checkSearch = useCallback(() => {
     if (search != null && search.includes('#')) {
       const [name, tag] = search.split('#') as string[]
       router.push(`/summoners/${name}-${tag}`)
     } else {
       alert('소환사 이름과 태그를 입력해 주세요')
     }
-  }
+  }, [search, router])
 
-  const handleClickSearch = () => {
+  const handleClickSearch = useCallback(() => {
     checkSearch()
-  }
+  }, [checkSearch])
 
   //KeyboardEvent =  키보드 이벤트가 발생할 때 제공되는 이벤트 객체의 타입
   const handleKeyDouwn = (e: React.KeyboardEvent<HTMLInputElement>) => {

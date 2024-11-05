@@ -7,11 +7,6 @@ export const GET = async (req: NextRequest) => {
   try {
     const { searchParams } = new URL(req.url) //쿼리 파라미터 추출
     const summonerPuuid = searchParams.get('puuid')
-
-    console.log(
-      `${kr_api_url}lol/summoner/v4/summoners/by-puuid/${summonerPuuid}?api_key=${process.env.NEXT_PUBLIC_API_KEY}`,
-    )
-
     const response = await axios.get(
       `${kr_api_url}lol/summoner/v4/summoners/by-puuid/${summonerPuuid}?api_key=${process.env.NEXT_PUBLIC_API_KEY}`,
     )
