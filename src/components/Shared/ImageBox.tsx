@@ -13,12 +13,12 @@ interface ImageProps {
 const ImageBox = ({
   src,
   alt,
-  className,
+  className = '',
   sizes,
   position = 'relative',
 }: ImageProps) => {
   return (
-    <div className={classNames(`${className} ${position}`)}>
+    <div className={classNames(`img-container ${className} ${position}`)}>
       <Image src={src} fill alt={alt || ''} sizes={sizes} />
     </div>
   )

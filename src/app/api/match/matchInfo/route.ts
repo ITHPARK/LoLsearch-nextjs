@@ -8,8 +8,6 @@ export const GET = async (req: NextRequest) => {
     const { searchParams } = new URL(req.url) //쿼리 파라미터 추출
     const matchId = searchParams.get('matchId')
 
-    console.log(searchParams)
-
     const response = await axios.get(
       `${asia_api_url}lol/match/v5/matches/${matchId}?api_key=${process.env.NEXT_PUBLIC_API_KEY}`,
     )

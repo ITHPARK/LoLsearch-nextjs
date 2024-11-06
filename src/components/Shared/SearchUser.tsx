@@ -6,7 +6,7 @@ import { IoSearch } from '@react-icons/all-files/io5/IoSearch'
 import { useRouter } from 'next/navigation'
 
 const SearchUser = () => {
-  const [search, setSearch] = useState<string>()
+  const [search, setSearch] = useState<string>('')
   const router = useRouter()
 
   //e는 이벤트 핸들러 타입

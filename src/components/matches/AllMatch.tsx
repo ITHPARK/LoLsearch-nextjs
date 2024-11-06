@@ -1,6 +1,7 @@
 'use client'
 import React from 'react'
 import MatchLow from '@/components/shared/MatchLow'
+import Flex from '@/components/shared/Flex'
 
 interface AllMatchProps {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -9,11 +10,11 @@ interface AllMatchProps {
 
 const AllMatch = ({ matchData }: AllMatchProps) => {
   return (
-    <div>
+    <Flex direction="col" className="gap-[5px]">
       {matchData.map((item, index) => {
         return <MatchLow key={index} matchInfo={item} />
       })}
-    </div>
+    </Flex>
   )
 }
 

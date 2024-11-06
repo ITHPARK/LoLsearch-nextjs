@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState, useEffect } from 'react'
+import React, { useEffect } from 'react'
 import { useParams } from 'next/navigation'
 import axios from 'axios'
 import ContentTop from '@/components/shared/ContentTop'
@@ -9,116 +9,94 @@ import Flex from '@/components/shared/Flex'
 import ProfileBox from '@/components/shared/ProfileBox'
 import ImageBox from '@/components/shared/ImageBox'
 import MatchList from '@/components/matches/MatchList'
-import { useSetRecoilState } from 'recoil'
+import { useRecoilState } from 'recoil'
 import { summonerPuuid } from '@/atom/summoner'
+import { useQuery } from '@tanstack/react-query'
 
-interface SummonerProps {
-  summonerName: string
-  summonerPuuid: string
-  summonerTag: string
-  summonerLevel: number | null
-  summonerIconId: number | null
+const fetchSummoner = async ({
+  gameName,
+  tagLine,
+}: {
+  gameName: string
+  tagLine: string
+}) => {
+  return await axios.get(
+    `/api/account/by-riot-id/?gameName=${gameName}&tagLine=${tagLine}`,
+  )
+}
+
+const fetchSummonerInfo = async (summonerPuuid: string) => {
+  //소환사 레벨과 아이콘 정보를 가져오는 함수
+  return await axios.get(`/api/summoners/by-puuid/?puuid=${summonerPuuid}`)
+}
+
+const fetchMatchData = async (summonerPuuid: string) => {
+  return await axios.get(`/api/match/matches/?puuid=${summonerPuuid}`)
 }
 
 const Summoner = () => {
   const { id } = useParams() // 경로 파라미터에서 'id'를 가져옴
-  const [isError, setIsError] = useState<string>('')
-  const [summonerInfo, setSummonerInfo] = useState<SummonerProps>({
-    //소환사 정보(이름,태그,puuid)
-    summonerName: '',
-    summonerPuuid: '',
-    summonerTag: '',
-    summonerLevel: null,
-    summonerIconId: null,
+
+  const [puuid, setPuuid] = useRecoilState(summonerPuuid)
+  const [gameName, tagLine] = (id as string).split('-')
+
+  //소환사 정보(puuid) 요청
+  const {
+    data: summonerDataPuuid,
+    isError: summonerDataPuuidError,
+    isLoading: summonerDataPuuidLoading,
+  } = useQuery({
+    queryKey: ['summonerPuuid'],
+    queryFn: () => fetchSummoner({ gameName, tagLine }),
   })
-  const setRecoilState = useSetRecoilState(summonerPuuid)
-
-  const [summonerMatchList, setSummonerMatchList] = useState([]) //소환사 게임 정보
-
-  useEffect(() => {
-    if (id) {
-      //id는 string
-      const [gameName, tagLine] = (id as string).split('-')
-
-      //유저의 닉네임과 태그를 추출해서 api를 요청
-      const fetchSummoner = async () => {
-        try {
-          const response = await axios.get(
-            `/api/account/by-riot-id/?gameName=${gameName}&tagLine=${tagLine}`,
-          )
-          setSummonerInfo((prev) => ({
-            ...prev, //이전 정보에서 3개만 수정
-            summonerName: response.data.gameName,
-            summonerPuuid: response.data.puuid,
-            summonerTag: response.data.tagLine,
-          }))
-
-          setRecoilState(response.data.puuid)
-        } catch (error: unknown) {
-          //axios 에러인지 확인
-          if (axios.isAxiosError(error)) {
-            if (error.status === 404) {
-              //404에러(요청하는 닉네임과 태그를 가진 소환사가 없다면) 메세지 넣기
-              setIsError(error.response?.data.message)
-            }
-          } else {
-            console.log(error)
-          }
-        }
-      }
-
-      fetchSummoner()
-    }
-  }, [id])
 
   //puuid로 데이터(아이콘 정보, 레벨) 추가
+  const {
+    data: summonerProfile,
+    isError: summonerProfileError,
+    isLoading: summonerProfileLoading,
+  } = useQuery({
+    queryKey: ['summonerProfile', summonerDataPuuid?.data.puuid],
+    queryFn: () => fetchSummonerInfo(summonerDataPuuid?.data.puuid),
+    enabled: summonerDataPuuid?.data.puuid != null, //fetchSummoner로 소환사 정보를 받아서 puuid의 값이 있을 때만 실행
+  })
+
+  //puuid로 매치 데이터 요청
+  const {
+    data: summonerMatchData,
+    isError: summonerMatchDataError,
+    isLoading: summonerMatchDataLoading,
+  } = useQuery({
+    queryKey: ['summonerMatch', summonerDataPuuid?.data.puuid],
+    queryFn: () => fetchMatchData(summonerDataPuuid?.data.puuid),
+    enabled:
+      summonerDataPuuid?.data.puuid != null &&
+      summonerDataPuuid?.data.puuid !== '', //fetchSummoner로 소환사 정보를 받아서 puuid의 값이 있을 때만 실행
+  })
+
+  //소환사 정보를 가져오면 recoil에 puuid를 설정
   useEffect(() => {
-    const fetchSummonerInfo = async () => {
-      //소환사 레벨과 아이콘 정보를 가져오는 함수
-      try {
-        const response = await axios.get(
-          `/api/summoners/by-puuid/?puuid=${summonerInfo.summonerPuuid}`,
-        )
-
-        setSummonerInfo((prev) => ({
-          ...prev, //이전 정보에서 3개만 수정
-          summonerLevel: response.data.summonerLevel,
-          summonerIconId: response.data.profileIconId,
-        }))
-      } catch (error) {
-        if (axios.isAxiosError(error)) {
-          console.log(error)
-        }
-
-        console.log(error)
-      }
+    if (summonerDataPuuid) {
+      setPuuid(summonerDataPuuid.data.puuid)
     }
+  }, [summonerDataPuuid, setPuuid])
 
-    const fetchMatchData = async () => {
-      try {
-        const matchResponse = await axios.get(
-          `/api/match/matches/?puuid=${summonerInfo.summonerPuuid}`,
-        )
+  // 에러가 발생하면 에러 메시지 출력
+  if (
+    summonerDataPuuidError ||
+    summonerProfileError ||
+    summonerMatchDataError
+  ) {
+    return <div>오류가 발생했습니다. 잠시 후 다시 시도해주세요.</div>
+  }
 
-        setSummonerMatchList(matchResponse.data)
-      } catch (error) {
-        if (axios.isAxiosError(error)) {
-          console.log(error)
-        }
-
-        console.log(error)
-      }
-    }
-
-    if (summonerInfo.summonerPuuid) {
-      fetchSummonerInfo()
-      fetchMatchData()
-    }
-  }, [summonerInfo.summonerPuuid])
-
-  if (isError.length > 0) {
-    //에러시 메세지 출력
-    return <div>{isError}</div>
+  // 로딩 중일 때는 로딩 메시지 출력
+  if (
+    summonerDataPuuidLoading ||
+    summonerProfileLoading ||
+    summonerMatchDataLoading
+  ) {
+    return <div>일치하는 소환사를 찾고 있습니다...</div>
   }
 
   return (
@@ -127,30 +105,30 @@ const Summoner = () => {
         <Flex align="end" className="gap-[10px]">
           <ProfileBox size="medium">
             <ImageBox
-              src={`http://ddragon.leagueoflegends.com/cdn/10.11.1/img/profileicon/${summonerInfo.summonerIconId}.png`}
+              src={`http://ddragon.leagueoflegends.com/cdn/10.11.1/img/profileicon/${summonerProfile?.data.profileIconId}.png`}
               sizes="100px"
             />
             <Text
               size="t1"
               className="px-[5px] py-[3px] absolute right-[5px] bottom-[5px] bg-[#000] rounded-[3px]"
             >
-              {summonerInfo.summonerLevel}
+              {summonerProfile?.data.summonerLevel}
             </Text>
           </ProfileBox>
-          {summonerInfo?.summonerName && (
+          {summonerDataPuuid?.data.gameName && (
             <Flex align="end" className="gap-[5px]">
               <Text size="t3" weight="bold" className="mr-[5px]">
-                {summonerInfo?.summonerName}
+                {summonerDataPuuid?.data.gameName}
               </Text>
               <Text size="t2" weight="light">
-                #{summonerInfo?.summonerTag}
+                #{summonerDataPuuid?.data.tagLine}
               </Text>
             </Flex>
           )}
         </Flex>
       </ContentTop>
 
-      <MatchList matchList={summonerMatchList} />
+      <MatchList matchList={summonerMatchData?.data} />
     </>
   )
 }
