@@ -24,7 +24,6 @@ const Test = () => {
   const uploadJson = async () => {
     const fileInput = document.getElementById('jsonFile') as HTMLInputElement
     const file = fileInput?.files?.[0]
-    console.log(file)
 
     if (file) {
       const reader = new FileReader()
@@ -32,21 +31,20 @@ const Test = () => {
       reader.onload = async (e) => {
         try {
           const jsonData = JSON.parse(e.target?.result as string) // JSON 파일 파싱
-          const profileIcons = jsonData.data // data 속성 추출
 
           // profileIcons 객체의 각 아이콘에 대해 Firestore에 추가
-          for (const item in profileIcons) {
-            if (profileIcons.hasOwnProperty(item)) {
+          for (const item in jsonData) {
+            if (jsonData.hasOwnProperty(item)) {
               // profileIcons의 속성 검사
-              const iconData = profileIcons[item] // 아이콘 데이터 가져오기
-              console.log(iconData)
-              try {
-                // Firestore의 `profileIcons` 컬렉션에 각 아이콘을 문서로 추가
-                await setDoc(doc(store, 'profileIcons', item), iconData)
-                console.log(`Added icon with ID: ${item}`)
-              } catch (error) {
-                console.error(`Error adding icon with ID: ${item}`, error)
-              }
+              const runeData = jsonData[item] // 아이콘 데이터 가져오기
+              console.log(runeData)
+              // try {
+              //   // Firestore의 `profileIcons` 컬렉션에 각 아이콘을 문서로 추가
+              //   await setDoc(doc(store, 'summonerRunes', item), runeData)
+              //   console.log(`Added icon with ID: ${item}`)
+              // } catch (error) {
+              //   console.error(`Error adding icon with ID: ${item}`, error)
+              // }
             }
           }
         } catch (error) {

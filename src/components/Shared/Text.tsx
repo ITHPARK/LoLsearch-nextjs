@@ -21,11 +21,12 @@ const Text: React.FC<TextProps> = ({
   const sizeClasses = {
     //font-size속성
     t1: 'text-[12px]',
-    t2: 'text-[16px]',
-    t3: 'text-[20px]',
-    t4: 'text-[26px]',
-    t5: 'text-[32px]',
-    t6: 'text-[40px]',
+    t2: 'text-[14px]',
+    t3: 'text-[16px]',
+    t4: 'text-[20px]',
+    t5: 'text-[26px]',
+    t6: 'text-[32px]',
+    t7: 'text-[40px]',
   }
 
   const fontWeight = {

@@ -9,7 +9,7 @@ import Flex from '@/components/shared/Flex'
 import ProfileBox from '@/components/shared/ProfileBox'
 import ImageBox from '@/components/shared/ImageBox'
 import MatchList from '@/components/matches/MatchList'
-import { useRecoilState } from 'recoil'
+import { useSetRecoilState } from 'recoil'
 import { summonerPuuid } from '@/atom/summoner'
 import { useQuery } from '@tanstack/react-query'
 
@@ -37,7 +37,7 @@ const fetchMatchData = async (summonerPuuid: string) => {
 const Summoner = () => {
   const { id } = useParams() // 경로 파라미터에서 'id'를 가져옴
 
-  const [puuid, setPuuid] = useRecoilState(summonerPuuid)
+  const setPuuid = useSetRecoilState(summonerPuuid)
   const [gameName, tagLine] = (id as string).split('-')
 
   //소환사 정보(puuid) 요청
@@ -103,10 +103,9 @@ const Summoner = () => {
     <>
       <ContentTop>
         <Flex align="end" className="gap-[10px]">
-          <ProfileBox size="medium">
+          <ProfileBox className="w-[80px] h-[80px]">
             <ImageBox
-              src={`http://ddragon.leagueoflegends.com/cdn/10.11.1/img/profileicon/${summonerProfile?.data.profileIconId}.png`}
-              sizes="100px"
+              src={`http://ddragon.leagueoflegends.com/cdn/14.22.1/img/profileicon/${summonerProfile?.data.profileIconId}.png`}
             />
             <Text
               size="t1"
