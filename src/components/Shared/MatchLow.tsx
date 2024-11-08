@@ -15,6 +15,10 @@ interface MatchListProps {
   [key: string]: any
 }
 
+interface SummonerRuneProps {
+  [key: string]: string
+}
+
 const fetchSpell = async (spell1: string, spell2: string) => {
   return await axios.get(
     `/api/summonerSpell/?spell1=${spell1}&spell2=${spell2}`,
@@ -32,6 +36,12 @@ const MatchLow = ({ matchInfo }: MatchListProps) => {
   const [player, setPlayer] = useState<any>(null)
   //게임 모드
   const [gameMode, setGameMode] = useState<string>('')
+
+  //소환사 룬
+  const [rune, setRune] = useState<SummonerRuneProps>({
+    mainRune: '',
+    subRune: '',
+  })
 
   useEffect(() => {
     const playerInfo = matchInfo?.data.info.participants.filter(
@@ -69,7 +79,7 @@ const MatchLow = ({ matchInfo }: MatchListProps) => {
     queryFn: () => {
       if (player != null) {
         return fetchPerks(
-          player.perks.styles[0].style,
+          player.perks.styles[0].selections[0].perk,
           player.perks.styles[1].style,
         )
       }
@@ -80,6 +90,10 @@ const MatchLow = ({ matchInfo }: MatchListProps) => {
   useEffect(() => {
     if (player != null && player.perks != null) {
       console.log(perksData)
+      setRune({
+        mainRune: perksData?.data.mainPerkData[0],
+        subRune: perksData?.data.subPerkData[0],
+      })
     }
   }, [player, perksData])
 
@@ -126,6 +140,7 @@ const MatchLow = ({ matchInfo }: MatchListProps) => {
             </Text>
           </div>
         </Flex>
+
         <Flex>
           <ChampionProfile
             name={player?.championName}
@@ -144,15 +159,16 @@ const MatchLow = ({ matchInfo }: MatchListProps) => {
               />
             </div>
           </Flex>
+
           <Flex direction="col" justify="between" className="ml-[8px]">
             <div className="w-[33px] h-[33px]">
               <ImageBox
-                src={`https://ddragon.leagueoflegends.com/cdn/14.22.1/img/spell/${spellData?.data[0].id}.png`}
+                src={`https://ddragon.leagueoflegends.com/cdn/img/${perksData?.data.mainPerkData[0].slots[0].runes[0].icon}`}
               />
             </div>
             <div className="w-[33px] h-[33px]">
               <ImageBox
-                src={`https://ddragon.leagueoflegends.com/cdn/14.22.1/img/spell/${spellData?.data[1].id}.png`}
+                src={`https://ddragon.leagueoflegends.com/cdn/img/${perksData?.data.subPerkData[0].icon}`}
               />
             </div>
           </Flex>
