@@ -14,17 +14,28 @@ export const GET = async (req: NextRequest) => {
     const summonerSpell2 = searchParams.get('spell2')
 
     // 조건에 맞는 문서 필터링
-    const spellsQuery = await getDocs(
+    const spellsQuery1 = await getDocs(
       query(
         collection(store, 'summonerSpell'),
-        where('key', 'in', [summonerSpell1, summonerSpell2]), //in: or과 같은 처리
+        where('key', '==', summonerSpell1), //in: or과 같은 처리
       ),
     )
 
-    // spellsQuery.docs에서 각 문서의 데이터를 가져와 배열로 변환
-    const spells = spellsQuery.docs.map((doc) => doc.data())
+    console.log(spellsQuery1.docs)
 
-    return NextResponse.json(spells, { status: 200 })
+    // spellsQuery.docs에서 각 문서의 데이터를 가져와 배열로 변환
+    const spells1 = spellsQuery1.docs.map((doc) => doc.data())
+
+    const spellsQuery2 = await getDocs(
+      query(
+        collection(store, 'summonerSpell'),
+        where('key', '==', summonerSpell2), //in: or과 같은 처리
+      ),
+    )
+
+    const spells2 = spellsQuery2.docs.map((doc) => doc.data())
+
+    return NextResponse.json({ spells1, spells2 }, { status: 200 })
   } catch (error) {
     const errorMessage = (error as Error).message
     return NextResponse.json({ message: errorMessage }, { status: 500 })

@@ -15,6 +15,10 @@ interface MatchListProps {
   [key: string]: any
 }
 
+interface SummonerSpellProps {
+  [key: string]: string
+}
+
 interface SummonerRuneProps {
   [key: string]: string
 }
@@ -37,32 +41,22 @@ const MatchLow = ({ matchInfo }: MatchListProps) => {
   //게임 모드
   const [gameMode, setGameMode] = useState<string>('')
 
+  //소환사 스펠
+  const [spell, setSpell] = useState<SummonerSpellProps>({
+    spell1: '',
+    spell2: '',
+  })
+
   //소환사 룬
   const [rune, setRune] = useState<SummonerRuneProps>({
     mainRune: '',
     subRune: '',
   })
 
-  useEffect(() => {
-    const playerInfo = matchInfo?.data.info.participants.filter(
-      (item: MatchListProps) => {
-        return item.puuid == playerPuuid
-      },
-    )
+  //연속킬 정보
+  const [kills, setKills] = useState<React.ReactNode>(null)
 
-    console.log(playerInfo[0])
-    console.log(matchInfo)
-
-    setPlayer(playerInfo[0])
-    if (matchInfo.data.info.gameMode == 'CLASSIC') {
-      setGameMode('클래식 모드')
-    } else if (matchInfo.data.info.gameMode == 'ARAM') {
-      setGameMode('무작위 총력전')
-    } else {
-      setGameMode('특별 게임 모드')
-    }
-  }, [matchInfo, playerPuuid])
-
+  //스펠 데이터 가져오기
   const { data: spellData } = useQuery({
     queryKey: ['spell', player?.summoner1Id, player?.summoner2Id],
     queryFn: () => {
@@ -71,15 +65,16 @@ const MatchLow = ({ matchInfo }: MatchListProps) => {
         return fetchSpell(player.summoner1Id, player.summoner2Id)
       }
     },
-    enabled: Boolean(player?.summoner1Id && player?.summoner2Id), // only run when player and both summoner IDs are available
+    enabled: Boolean(player?.summoner1Id && player?.summoner2Id), // player?.summoner1Id && player?.summoner2Id값이 있을 때 실행
   })
 
+  //룬 데이터 가져오기
   const { data: perksData } = useQuery({
     queryKey: ['perk', matchInfo],
     queryFn: () => {
       if (player != null) {
         return fetchPerks(
-          player.perks.styles[0].selections[0].perk,
+          player.perks.styles[0].style,
           player.perks.styles[1].style,
         )
       }
@@ -88,14 +83,109 @@ const MatchLow = ({ matchInfo }: MatchListProps) => {
   })
 
   useEffect(() => {
-    if (player != null && player.perks != null) {
-      console.log(perksData)
-      setRune({
-        mainRune: perksData?.data.mainPerkData[0],
-        subRune: perksData?.data.subPerkData[0],
+    if (matchInfo && playerPuuid) {
+      const playerInfo = matchInfo.data.info.participants.filter(
+        (item: MatchListProps) => {
+          return item.puuid == playerPuuid
+        },
+      )
+      console.log(playerInfo[0])
+
+      setPlayer(playerInfo[0])
+      if (matchInfo.data.info.gameMode == 'CLASSIC') {
+        setGameMode('클래식 모드')
+      } else if (matchInfo.data.info.gameMode == 'ARAM') {
+        setGameMode('무작위 총력전')
+      } else {
+        setGameMode('특별 게임 모드')
+      }
+    }
+  }, [matchInfo, playerPuuid])
+
+  useEffect(() => {
+    //스펠 state 업데이트
+    if (spellData != null) {
+      setSpell({
+        spell1: spellData.data.spells1[0].id,
+        spell2: spellData.data.spells2[0].id,
       })
     }
-  }, [player, perksData])
+  }, [spellData])
+
+  //룬 state 업데이트
+  useEffect(() => {
+    if (player != null && player.perks != null && perksData != null) {
+      const mainPerkImg = perksData.data.mainPerkData[0].slots[0].runes.filter(
+        (data: any) => data.id == player.perks.styles[0].selections[0].perk,
+      )[0].icon
+
+      setRune({
+        mainRune: mainPerkImg,
+        subRune: perksData.data.subPerkData[0].icon,
+      })
+    }
+  }, [player, perksData, rune])
+
+  //연속킬 정보
+  useEffect(() => {
+    if (player != null) {
+      const arr = [
+        player.doubleKills,
+        player.tripleKills,
+        player.quadraKills,
+        player.pentaKills,
+      ]
+
+      let result: React.ReactNode = null
+
+      arr.map((item, index) => {
+        if (item > 0) {
+          if (index == 0)
+            result = (
+              <Text
+                size="t2"
+                weight="bold"
+                className="px-[5px] py-[2px] bg-[#E84057] rounded-[3px]"
+              >
+                더블킬
+              </Text>
+            )
+          if (index == 1)
+            result = (
+              <Text
+                size="t2"
+                weight="bold"
+                className="px-[5px] py-[2px] bg-[#E84057] rounded-[3px]"
+              >
+                트리플킬
+              </Text>
+            )
+          if (index == 2)
+            result = (
+              <Text
+                size="t2"
+                weight="bold"
+                className="px-[5px] py-[2px] bg-[#E84057] rounded-[3px]"
+              >
+                쿼드라킬
+              </Text>
+            )
+          if (index == 3)
+            result = (
+              <Text
+                size="t2"
+                weight="bold"
+                className="px-[5px] py-[2px] bg-[#E84057] rounded-[3px]"
+              >
+                펜타킬
+              </Text>
+            )
+        }
+      })
+
+      setKills(result)
+    }
+  }, [player])
 
   //경기 승패 컬러
   const matchResultColor = {
@@ -142,35 +232,60 @@ const MatchLow = ({ matchInfo }: MatchListProps) => {
         </Flex>
 
         <Flex>
+          {/* 챔피언 이미지  */}
           <ChampionProfile
             name={player?.championName}
             level={player?.champLevel}
             className="w-[74px] h-[74px] "
           />
+
+          {/* 스펠 정보  */}
           <Flex direction="col" justify="between" className="ml-[6px]">
             <div className="w-[33px] h-[33px]">
               <ImageBox
-                src={`https://ddragon.leagueoflegends.com/cdn/14.22.1/img/spell/${spellData?.data[0].id}.png`}
+                src={`https://ddragon.leagueoflegends.com/cdn/14.22.1/img/spell/${spell.spell1}.png`}
               />
             </div>
             <div className="w-[33px] h-[33px]">
               <ImageBox
-                src={`https://ddragon.leagueoflegends.com/cdn/14.22.1/img/spell/${spellData?.data[1].id}.png`}
+                src={`https://ddragon.leagueoflegends.com/cdn/14.22.1/img/spell/${spell.spell2}.png`}
               />
             </div>
           </Flex>
 
+          {/* 룬 정보  */}
           <Flex direction="col" justify="between" className="ml-[8px]">
-            <div className="w-[33px] h-[33px]">
+            <div></div>
+            <div className="p-[4px] w-[33px] h-[33px] bg-[#000] rounded-[50%]">
               <ImageBox
-                src={`https://ddragon.leagueoflegends.com/cdn/img/${perksData?.data.mainPerkData[0].slots[0].runes[0].icon}`}
+                src={`https://ddragon.leagueoflegends.com/cdn/img/${rune.mainRune}`}
               />
             </div>
-            <div className="w-[33px] h-[33px]">
+            <div className="p-[6px] w-[33px] h-[33px] bg-[#000] rounded-[50%]">
               <ImageBox
-                src={`https://ddragon.leagueoflegends.com/cdn/img/${perksData?.data.subPerkData[0].icon}`}
+                src={`https://ddragon.leagueoflegends.com/cdn/img/${rune.subRune}`}
               />
             </div>
+          </Flex>
+
+          {/* 킬뎃 정보  */}
+          <Flex justify="center" align="center" className="w-[80px] ml-[40px]">
+            <Flex direction="col" align="center" className="gap-[5px]">
+              <Flex>
+                <Text size="t3" weight="bold" className="text-[#4D4D4D]">
+                  {player?.kills}
+                </Text>
+                <Text className="px-[5px] text-[#4D4D4D]">/</Text>
+                <Text size="t3" weight="bold" className="text-[#4D4D4D]">
+                  {player?.deaths}
+                </Text>
+                <Text className="px-[5px] text-[#4D4D4D]">/</Text>
+                <Text size="t3" weight="bold" className="text-[#4D4D4D]">
+                  {player?.assists}
+                </Text>
+              </Flex>
+              {kills != null ? kills : ''}
+            </Flex>
           </Flex>
         </Flex>
       </Flex>

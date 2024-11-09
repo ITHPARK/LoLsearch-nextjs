@@ -26,7 +26,7 @@ export const GET = async (req: NextRequest) => {
     const subPerkQuery = await getDocs(
       query(
         collection(store, 'summonerRunes'),
-        where('slots.runes', '==', subPerkId), // id가 mainPerkId 또는 subPerkId 값과 일치하는 문서 필터링
+        where('id', '==', subPerkId), // id가 mainPerkId 또는 subPerkId 값과 일치하는 문서 필터링
       ),
     )
 
