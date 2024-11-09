@@ -17,7 +17,7 @@ const ImageBox = ({
 }: ImageProps) => {
   return (
     <div className={classNames(`img-container ${className} ${position} `)}>
-      <Image src={src} fill alt={alt || ''} />
+      <Image src={src} fill alt={alt || ''} sizes="100px" />
     </div>
   )
 }

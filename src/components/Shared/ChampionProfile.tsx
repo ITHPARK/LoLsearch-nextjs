@@ -33,9 +33,11 @@ const ChampionProfile = ({
         src={`https://ddragon.leagueoflegends.com/cdn/14.22.1/img/champion/${name}.png`}
         alt={name}
       />
-      <span className=" w-[20px] h-[20px] flex justify-center items-center absolute right-[3px] bottom-[3px] text-[14px] bg-[#000]">
-        {level || ''}
-      </span>
+      {level && (
+        <span className=" w-[20px] h-[20px] flex justify-center items-center absolute right-[3px] bottom-[3px] text-[14px] bg-[#000]">
+          {level || ''}
+        </span>
+      )}
     </div>
   )
 }

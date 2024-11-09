@@ -23,6 +23,13 @@ interface SummonerRuneProps {
   [key: string]: string
 }
 
+interface SummonerItem {
+  [key: string]: number[]
+}
+interface SummonerTeam {
+  [key: string]: any
+}
+
 const fetchSpell = async (spell1: string, spell2: string) => {
   return await axios.get(
     `/api/summonerSpell/?spell1=${spell1}&spell2=${spell2}`,
@@ -55,6 +62,17 @@ const MatchLow = ({ matchInfo }: MatchListProps) => {
 
   //연속킬 정보
   const [kills, setKills] = useState<React.ReactNode>(null)
+
+  //아이템 정보
+  const [itemData, setitemData] = useState<SummonerItem>({
+    line1: [],
+    line2: [],
+  })
+
+  const [team, setTeam] = useState<SummonerTeam>({
+    team1: [],
+    team2: [],
+  })
 
   //스펠 데이터 가져오기
   const { data: spellData } = useQuery({
@@ -90,6 +108,7 @@ const MatchLow = ({ matchInfo }: MatchListProps) => {
         },
       )
       console.log(playerInfo[0])
+      console.log(matchInfo)
 
       setPlayer(playerInfo[0])
       if (matchInfo.data.info.gameMode == 'CLASSIC') {
@@ -99,6 +118,23 @@ const MatchLow = ({ matchInfo }: MatchListProps) => {
       } else {
         setGameMode('특별 게임 모드')
       }
+
+      //팀 별로 구분
+      const [team1, team2] = [
+        matchInfo.data.info.participants.filter(
+          (item: SummonerTeam) => item.teamId == 100,
+        ),
+        matchInfo.data.info.participants.filter(
+          (item: SummonerTeam) => item.teamId == 200,
+        ),
+      ]
+
+      setTeam({
+        team1: team1,
+        team2: team2,
+      })
+
+      console.log(team1, team2)
     }
   }, [matchInfo, playerPuuid])
 
@@ -124,7 +160,7 @@ const MatchLow = ({ matchInfo }: MatchListProps) => {
         subRune: perksData.data.subPerkData[0].icon,
       })
     }
-  }, [player, perksData, rune])
+  }, [player, perksData])
 
   //연속킬 정보
   useEffect(() => {
@@ -184,6 +220,17 @@ const MatchLow = ({ matchInfo }: MatchListProps) => {
       })
 
       setKills(result)
+
+      //아이템 데이터 추가
+      const [itemData1, itemData2] = [
+        [player.item0, player.item1, player.item2, player.item6],
+        [player.item3, player.item4, player.item5],
+      ]
+
+      setitemData({
+        line1: itemData1,
+        line2: itemData2,
+      })
     }
   }, [player])
 
@@ -206,7 +253,7 @@ const MatchLow = ({ matchInfo }: MatchListProps) => {
           player?.win ? matchResultColor['win'] : matchResultColor['lose'],
         )}
       >
-        <Flex direction="col" justify="center" className="w-[110px]">
+        <Flex direction="col" justify="center" className="w-[150px]">
           <Text
             display="block"
             size="t2"
@@ -231,45 +278,47 @@ const MatchLow = ({ matchInfo }: MatchListProps) => {
           </div>
         </Flex>
 
-        <Flex>
-          {/* 챔피언 이미지  */}
-          <ChampionProfile
-            name={player?.championName}
-            level={player?.champLevel}
-            className="w-[74px] h-[74px] "
-          />
+        <Flex justify="between" className="w-full">
+          <Flex>
+            {/* 챔피언 이미지  */}
+            <ChampionProfile
+              name={player?.championName}
+              level={player?.champLevel}
+              className="w-[80px] h-[80px] "
+            />
 
-          {/* 스펠 정보  */}
-          <Flex direction="col" justify="between" className="ml-[6px]">
-            <div className="w-[33px] h-[33px]">
-              <ImageBox
-                src={`https://ddragon.leagueoflegends.com/cdn/14.22.1/img/spell/${spell.spell1}.png`}
-              />
-            </div>
-            <div className="w-[33px] h-[33px]">
-              <ImageBox
-                src={`https://ddragon.leagueoflegends.com/cdn/14.22.1/img/spell/${spell.spell2}.png`}
-              />
-            </div>
-          </Flex>
+            {/* 스펠 정보  */}
+            <Flex direction="col" justify="between" className="ml-[6px]">
+              <div className="w-[37px] h-[37px]">
+                <ImageBox
+                  src={`https://ddragon.leagueoflegends.com/cdn/14.22.1/img/spell/${spell.spell1}.png`}
+                />
+              </div>
+              <div className="w-[37px] h-[37px]">
+                <ImageBox
+                  src={`https://ddragon.leagueoflegends.com/cdn/14.22.1/img/spell/${spell.spell2}.png`}
+                />
+              </div>
+            </Flex>
 
-          {/* 룬 정보  */}
-          <Flex direction="col" justify="between" className="ml-[8px]">
-            <div></div>
-            <div className="p-[4px] w-[33px] h-[33px] bg-[#000] rounded-[50%]">
-              <ImageBox
-                src={`https://ddragon.leagueoflegends.com/cdn/img/${rune.mainRune}`}
-              />
-            </div>
-            <div className="p-[6px] w-[33px] h-[33px] bg-[#000] rounded-[50%]">
-              <ImageBox
-                src={`https://ddragon.leagueoflegends.com/cdn/img/${rune.subRune}`}
-              />
-            </div>
+            {/* 룬 정보  */}
+            <Flex direction="col" justify="between" className="ml-[8px]">
+              <div></div>
+              <div className="p-[4px] w-[33px] h-[33px] bg-[#000] rounded-[50%]">
+                <ImageBox
+                  src={`https://ddragon.leagueoflegends.com/cdn/img/${rune.mainRune}`}
+                />
+              </div>
+              <div className="p-[6px] w-[33px] h-[33px] bg-[#000] rounded-[50%]">
+                <ImageBox
+                  src={`https://ddragon.leagueoflegends.com/cdn/img/${rune.subRune}`}
+                />
+              </div>
+            </Flex>
           </Flex>
 
           {/* 킬뎃 정보  */}
-          <Flex justify="center" align="center" className="w-[80px] ml-[40px]">
+          <Flex justify="center" align="center" className="w-[80px] ">
             <Flex direction="col" align="center" className="gap-[5px]">
               <Flex>
                 <Text size="t3" weight="bold" className="text-[#4D4D4D]">
@@ -285,6 +334,81 @@ const MatchLow = ({ matchInfo }: MatchListProps) => {
                 </Text>
               </Flex>
               {kills != null ? kills : ''}
+            </Flex>
+          </Flex>
+
+          {/* 아이템 정보 */}
+          <Flex direction="col" className=" gap-[6px]">
+            {Object.entries(itemData).map(([item, data]) => {
+              return (
+                <Flex key={item} className="gap-[5px]">
+                  {data.map((a, idx) => (
+                    <div
+                      key={`item-${idx}`}
+                      className="w-[37px] h-[37px] rounded-[3px] overflow-hidden"
+                    >
+                      {a ? (
+                        <ImageBox
+                          src={`https://ddragon.leagueoflegends.com/cdn/14.22.1/img/item/${a}.png`}
+                        />
+                      ) : (
+                        <div className="w-[37px] h-[37px] bg-[#c4c2be] shadow-[inset_0_1px_4px_rgba(0,0,0,0.6)]"></div>
+                      )}
+                    </div>
+                  ))}
+                </Flex>
+              )
+            })}
+          </Flex>
+
+          {/* 평점, cs, 골드 */}
+          <Flex direction="col" justify="center" className=" gap-[5px]">
+            <Text size="t2" className="text-[#4D4D4D]" weight="bold">
+              평점 :&nbsp;
+              {((player?.kills + player?.assists) / player?.deaths).toFixed(2)}
+            </Text>
+            <Text size="t2" className="text-[#4D4D4D]">
+              CS : {player?.totalMinionsKilled} &nbsp;
+              {`(${(player?.totalMinionsKilled / Math.floor(matchInfo.data.info.gameDuration / 60)).toFixed(1)})`}
+            </Text>
+            <Text size="t2" className="text-[#4D4D4D]">
+              골드 : {player?.goldEarned}
+            </Text>
+          </Flex>
+
+          {/* 챔피언 리스트 */}
+          <Flex className="gap-[10px]">
+            <Flex direction="col" justify="between">
+              {team.team1.map((item: SummonerTeam, index: number) => (
+                <Flex align="center" key={index}>
+                  <ChampionProfile
+                    name={item.championName}
+                    className="w-[15px] h-[15px]"
+                  />
+                  <Text
+                    size="t1"
+                    className="text-[#4D4D4D] ml-[5px] w-[70px] text-ellipsis overflow-hidden whitespace-nowrap"
+                  >
+                    {item.riotIdGameName}
+                  </Text>
+                </Flex>
+              ))}
+            </Flex>
+            <Flex direction="col" justify="between">
+              {team.team2.map((item: SummonerTeam, index: number) => (
+                <Flex align="center" key={index}>
+                  <ChampionProfile
+                    name={item.championName}
+                    className="w-[15px] h-[15px]"
+                  />
+                  <Text
+                    size="t1"
+                    className="text-[#4D4D4D] ml-[5px] w-[70px] text-ellipsis overflow-hidden whitespace-nowrap"
+                  >
+                    {item.riotIdGameName}
+                  </Text>
+                </Flex>
+              ))}
             </Flex>
           </Flex>
         </Flex>
