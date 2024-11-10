@@ -20,13 +20,14 @@ interface SummonerSpellProps {
 }
 
 interface SummonerRuneProps {
-  [key: string]: string
+  [key: string]: string | null
 }
 
 interface SummonerItem {
   [key: string]: number[]
 }
 interface SummonerTeam {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   [key: string]: any
 }
 
@@ -56,8 +57,8 @@ const MatchLow = ({ matchInfo }: MatchListProps) => {
 
   //소환사 룬
   const [rune, setRune] = useState<SummonerRuneProps>({
-    mainRune: '',
-    subRune: '',
+    mainRune: null,
+    subRune: null,
   })
 
   //연속킬 정보
@@ -86,9 +87,9 @@ const MatchLow = ({ matchInfo }: MatchListProps) => {
     enabled: Boolean(player?.summoner1Id && player?.summoner2Id), // player?.summoner1Id && player?.summoner2Id값이 있을 때 실행
   })
 
-  //룬 데이터 가져오기
+  // 룬 데이터 가져오기
   const { data: perksData } = useQuery({
-    queryKey: ['perk', matchInfo],
+    queryKey: ['perk', matchInfo], // matchInfo가 변경되면 쿼리 다시 실행
     queryFn: () => {
       if (player != null) {
         return fetchPerks(
@@ -97,7 +98,7 @@ const MatchLow = ({ matchInfo }: MatchListProps) => {
         )
       }
     },
-    enabled: player != null,
+    enabled: player != null && matchInfo != null, // player와 matchInfo가 모두 있을 때만 실행
   })
 
   useEffect(() => {
@@ -107,8 +108,6 @@ const MatchLow = ({ matchInfo }: MatchListProps) => {
           return item.puuid == playerPuuid
         },
       )
-      console.log(playerInfo[0])
-      console.log(matchInfo)
 
       setPlayer(playerInfo[0])
       if (matchInfo.data.info.gameMode == 'CLASSIC') {
@@ -133,8 +132,6 @@ const MatchLow = ({ matchInfo }: MatchListProps) => {
         team1: team1,
         team2: team2,
       })
-
-      console.log(team1, team2)
     }
   }, [matchInfo, playerPuuid])
 
@@ -151,10 +148,11 @@ const MatchLow = ({ matchInfo }: MatchListProps) => {
   //룬 state 업데이트
   useEffect(() => {
     if (player != null && player.perks != null && perksData != null) {
+      //룬 플레이어가 선택한 룬 카테고리를 순회하면서 플레이어가 선택한 룬 정보를 필터링함
       const mainPerkImg = perksData.data.mainPerkData[0].slots[0].runes.filter(
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         (data: any) => data.id == player.perks.styles[0].selections[0].perk,
-      )[0].icon
-
+      )[0]?.icon
       setRune({
         mainRune: mainPerkImg,
         subRune: perksData.data.subPerkData[0].icon,
@@ -381,32 +379,54 @@ const MatchLow = ({ matchInfo }: MatchListProps) => {
             <Flex direction="col" justify="between">
               {team.team1.map((item: SummonerTeam, index: number) => (
                 <Flex align="center" key={index}>
-                  <ChampionProfile
-                    name={item.championName}
-                    className="w-[15px] h-[15px]"
-                  />
-                  <Text
-                    size="t1"
-                    className="text-[#4D4D4D] ml-[5px] w-[70px] text-ellipsis overflow-hidden whitespace-nowrap"
+                  <button
+                    onClick={() => {
+                      window.open(
+                        `/summoners/${item.riotIdGameName}-${item.riotIdTagline}`,
+                        '_blank',
+                      )
+                    }}
+                    className="flex items-center"
                   >
-                    {item.riotIdGameName}
-                  </Text>
+                    <ChampionProfile
+                      name={item.championName}
+                      className="w-[15px] h-[15px]"
+                    />
+                    <Text
+                      size="t1"
+                      className="text-[#4D4D4D] ml-[5px] w-[70px] text-ellipsis overflow-hidden whitespace-nowrap"
+                    >
+                      {/*{item.riotIdGameName} */}
+                      유저 이름
+                    </Text>
+                  </button>
                 </Flex>
               ))}
             </Flex>
             <Flex direction="col" justify="between">
               {team.team2.map((item: SummonerTeam, index: number) => (
                 <Flex align="center" key={index}>
-                  <ChampionProfile
-                    name={item.championName}
-                    className="w-[15px] h-[15px]"
-                  />
-                  <Text
-                    size="t1"
-                    className="text-[#4D4D4D] ml-[5px] w-[70px] text-ellipsis overflow-hidden whitespace-nowrap"
+                  <button
+                    onClick={() => {
+                      window.open(
+                        `/summoners/${item.riotIdGameName}-${item.riotIdTagline}`,
+                        '_blank',
+                      )
+                    }}
+                    className="flex items-center"
                   >
-                    {item.riotIdGameName}
-                  </Text>
+                    <ChampionProfile
+                      name={item.championName}
+                      className="w-[15px] h-[15px]"
+                    />
+                    <Text
+                      size="t1"
+                      className="text-[#4D4D4D] ml-[5px] w-[70px] text-ellipsis overflow-hidden whitespace-nowrap"
+                    >
+                      {/*{item.riotIdGameName} */}
+                      유저 이름
+                    </Text>
+                  </button>
                 </Flex>
               ))}
             </Flex>

@@ -14,7 +14,7 @@ const Text: React.FC<TextProps> = ({
   display = 'inline-block',
   size,
   weight,
-  textAlign,
+  textAlign = 'left',
   className,
   children,
 }) => {

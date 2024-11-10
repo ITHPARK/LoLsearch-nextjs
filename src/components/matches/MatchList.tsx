@@ -1,6 +1,6 @@
 'use client'
 
-import React from 'react'
+import React, { useEffect } from 'react'
 import ContentTop from '@/components/shared/ContentTop'
 import Tab from '@/components/shared/Tab'
 import axios from 'axios'
