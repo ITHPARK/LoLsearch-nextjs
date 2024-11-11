@@ -11,6 +11,10 @@ module.exports = {
     extend: {
       colors: {
         darkGray: '#363742',
+        decoWin: '#5383E8',
+        decoLose: '#E84057',
+        matchResultWin: '#ECF2FF',
+        matchResultLose: '#fff1f3',
       },
       fontFamily: {
         kanit: ['Kanit', 'serif'],

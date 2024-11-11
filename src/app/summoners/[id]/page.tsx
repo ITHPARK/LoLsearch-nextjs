@@ -117,8 +117,7 @@ const Summoner = () => {
           {summonerDataPuuid?.data.gameName && (
             <Flex align="end" className="gap-[5px]">
               <Text size="t3" weight="bold" className="mr-[5px]">
-                {/* {summonerDataPuuid?.data.gameName} */}
-                유저 이름
+                {summonerDataPuuid?.data.gameName}
               </Text>
               <Text size="t2" weight="light">
                 #{summonerDataPuuid?.data.tagLine}
