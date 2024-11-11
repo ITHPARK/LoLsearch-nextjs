@@ -1,5 +1,7 @@
+'use client'
+
 import React, { useState } from 'react'
-import Flex from './Flex'
+import Flex from '@/app/components/shared/Flex'
 
 // 컴포넌트 타입. 확장이 불가능하도록 type사용
 type TabComponents = {

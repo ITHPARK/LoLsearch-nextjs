@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useState, useCallback } from 'react'
-import Flex from './Flex'
+import Flex from '../../app/components/shared/Flex'
 import { IoSearch } from '@react-icons/all-files/io5/IoSearch'
 import { useRouter } from 'next/navigation'
 

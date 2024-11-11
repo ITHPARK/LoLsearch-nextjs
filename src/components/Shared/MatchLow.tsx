@@ -1,8 +1,10 @@
+'use client'
+
 import React, { useState, useEffect } from 'react'
 import { useRecoilValue } from 'recoil'
 import { summonerPuuid } from '@/atom/summoner'
 import classNames from 'classnames'
-import Flex from '@/components/shared/Flex'
+import Flex from '@/app/components/shared/Flex'
 import { IoIosArrowDown } from '@react-icons/all-files/io/IoIosArrowDown'
 import GameCategory from '@/components/matches/info/GameCategory'
 import CharactorSet from '@/components/matches/info/CharactorSet'
@@ -31,13 +33,13 @@ const MatchLow = ({ matchInfo }: matchInfoProps) => {
 
   return (
     <Flex direction="col" className="bg-transparent">
-      <Flex
+      123213
+      {/* <Flex
         className={classNames(
           'p-[10px] rounded-tl-[3px] rounded-tr-[3px]',
           player?.win ? 'bg-matchResultWin' : 'bg-matchResultLose',
         )}
       >
-        {/* 게임 카테고리  정보*/}
         <GameCategory player={player} matchInfo={matchInfo} />
 
         <Flex justify="between" className="w-full">
@@ -47,14 +49,12 @@ const MatchLow = ({ matchInfo }: matchInfoProps) => {
 
           <ItemInfo player={player} />
 
-          {/* 평점, cs, 골드 */}
           <ScoreInfo player={player} matchInfo={matchInfo} />
 
-          {/* 챔피언 리스트 */}
           <TeamInfo matchInfo={matchInfo} />
         </Flex>
-      </Flex>
-      <Flex
+      </Flex> */}
+      {/* <Flex
         justify="center"
         align="center"
         className={classNames(
@@ -63,7 +63,7 @@ const MatchLow = ({ matchInfo }: matchInfoProps) => {
         )}
       >
         <IoIosArrowDown fill="#fff" />
-      </Flex>
+      </Flex> */}
     </Flex>
   )
 }

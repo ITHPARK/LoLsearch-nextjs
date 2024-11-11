@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
-import Flex from '@/components/shared/Flex'
-import ImageBox from '@/components/shared/ImageBox'
+import Flex from '@/app/components/shared/Flex'
+import ImageBox from '@/app/components/shared/ImageBox'
 import { playerProps } from '@/models/type'
 
 interface SummonerItem {

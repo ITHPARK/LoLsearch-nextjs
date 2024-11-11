@@ -1,6 +1,6 @@
 import React from 'react'
-import Flex from '@/components/shared/Flex'
-import Text from '@/components/shared/Text'
+import Flex from '@/app/components/shared/Flex'
+import Text from '@/app/components/shared/Text'
 import { playerProps } from '@/models/type'
 import { matchInfoProps } from '@/models/type'
 

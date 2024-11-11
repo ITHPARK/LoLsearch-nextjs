@@ -1,6 +1,6 @@
 import classNames from 'classnames'
 import React from 'react'
-import ImageBox from '@/components/shared/ImageBox'
+import ImageBox from '@/app/components/shared/ImageBox'
 
 interface ChampionProfileProps {
   name: string

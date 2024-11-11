@@ -1,18 +1,18 @@
-'use client'
 import React from 'react'
 import MatchLow from '@/components/shared/MatchLow'
-import Flex from '@/components/shared/Flex'
+import Flex from '@/app/components/shared/Flex'
 
 interface AllMatchProps {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  matchData: any[]
+  matchIds: string[]
 }
 
-const AllMatch = ({ matchData }: AllMatchProps) => {
+const AllMatch = ({ matchIds }: AllMatchProps) => {
+  console.log(matchIds)
   return (
     <Flex direction="col" className="gap-[5px]">
-      {matchData.map((item, index) => {
-        return <MatchLow key={index} matchInfo={item} />
+      {matchIds.map((item: string, index: number) => {
+        return <MatchLow key={index} matchid={item} />
       })}
     </Flex>
   )

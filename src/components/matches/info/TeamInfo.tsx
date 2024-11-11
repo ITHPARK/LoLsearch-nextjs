@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
-import Flex from '@/components/shared/Flex'
-import Text from '@/components/shared/Text'
-import ChampionProfile from '@/components/shared/ChampionProfile'
+import Flex from '@/app/components/shared/Flex'
+import Text from '@/app/components/shared/Text'
+import ChampionProfile from '@/app/components/shared/ChampionProfile'
 import { matchInfoProps } from '@/models/type'
 
 interface SummonerTeam {
