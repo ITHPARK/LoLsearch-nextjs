@@ -1,7 +1,7 @@
 'use client'
 import React from 'react'
 import { store } from '@/remote/firebase'
-import { doc, setDoc, getDoc } from 'firebase/firestore'
+import { doc, getDoc } from 'firebase/firestore'
 
 const Test = () => {
   async function checkConnection() {

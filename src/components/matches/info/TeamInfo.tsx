@@ -17,16 +17,13 @@ const TeamInfo = ({ matchInfo }: matchInfoProps) => {
 
   //팀 별로 구분
   const [team1, team2] = [
-    matchInfo.data.info.participants.filter((item: SummonerTeam) => {
-      console.log(item)
-      return item.teamId == 100
-    }),
+    matchInfo.data.info.participants.filter(
+      (item: SummonerTeam) => item.teamId == 100,
+    ),
     matchInfo.data.info.participants.filter(
       (item: SummonerTeam) => item.teamId == 200,
     ),
   ]
-
-  console.log(team1, team2)
 
   useEffect(() => {
     setTeam({
