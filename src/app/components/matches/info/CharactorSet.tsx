@@ -81,6 +81,11 @@ const CharactorSet = ({ player }: playerProps) => {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         (data: any) => data.id == player.perks.styles[0].selections[0].perk,
       )[0]?.icon
+
+      console.log(player.championName) //챔피언 이름
+      console.log(perksData.data.mainPerkData[0].slots[0].runes) //해당 플레이어가 선택한 룬 카테고리 배열
+      console.log(player.perks.styles[0].selections[0].perk) //해당 플레이어가 선택한 룬정보
+
       setRune({
         mainRune: mainPerkImg,
         subRune: perksData.data.subPerkData[0].icon,
@@ -100,14 +105,18 @@ const CharactorSet = ({ player }: playerProps) => {
       {/* 스펠 정보  */}
       <Flex direction="col" justify="between" className="ml-[6px]">
         <div className="w-[37px] h-[37px]">
-          <ImageBox
-            src={`https://ddragon.leagueoflegends.com/cdn/14.22.1/img/spell/${spell.spell1}.png`}
-          />
+          {spell.spell1 && (
+            <ImageBox
+              src={`https://ddragon.leagueoflegends.com/cdn/14.22.1/img/spell/${spell.spell1}.png`}
+            />
+          )}
         </div>
         <div className="w-[37px] h-[37px]">
-          <ImageBox
-            src={`https://ddragon.leagueoflegends.com/cdn/14.22.1/img/spell/${spell.spell2}.png`}
-          />
+          {spell.spell2 && (
+            <ImageBox
+              src={`https://ddragon.leagueoflegends.com/cdn/14.22.1/img/spell/${spell.spell2}.png`}
+            />
+          )}
         </div>
       </Flex>
 
@@ -115,14 +124,18 @@ const CharactorSet = ({ player }: playerProps) => {
       <Flex direction="col" justify="between" className="ml-[8px]">
         <div></div>
         <div className="p-[4px] w-[33px] h-[33px] bg-[#000] rounded-[50%]">
-          <ImageBox
-            src={`https://ddragon.leagueoflegends.com/cdn/img/${rune.mainRune}`}
-          />
+          {rune.mainRune && (
+            <ImageBox
+              src={`https://ddragon.leagueoflegends.com/cdn/img/${rune.mainRune}`}
+            />
+          )}
         </div>
         <div className="p-[6px] w-[33px] h-[33px] bg-[#000] rounded-[50%]">
-          <ImageBox
-            src={`https://ddragon.leagueoflegends.com/cdn/img/${rune.subRune}`}
-          />
+          {rune.subRune && (
+            <ImageBox
+              src={`https://ddragon.leagueoflegends.com/cdn/img/${rune.subRune}`}
+            />
+          )}
         </div>
       </Flex>
     </Flex>

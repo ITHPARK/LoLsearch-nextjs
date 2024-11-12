@@ -1,5 +1,5 @@
-import SearchUser from '@/components/shared/SearchUser'
-import Test from '@/components/Test'
+import SearchUser from '@/app/components/shared/SearchUser'
+import Test from '@/app/components/Test'
 
 const Home = () => {
   return (

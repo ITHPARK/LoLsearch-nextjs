@@ -1,8 +1,11 @@
+'use client'
+
 import React, { useState, useEffect } from 'react'
 import Flex from '@/app/components/shared/Flex'
 import Text from '@/app/components/shared/Text'
 import ChampionProfile from '@/app/components/shared/ChampionProfile'
 import { matchInfoProps } from '@/models/type'
+import { useRouter } from 'next/navigation'
 
 interface SummonerTeam {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -10,6 +13,8 @@ interface SummonerTeam {
 }
 
 const TeamInfo = ({ matchInfo }: matchInfoProps) => {
+  const router = useRouter()
+
   const [team, setTeam] = useState({
     team1: [] as SummonerTeam[],
     team2: [] as SummonerTeam[],
@@ -17,10 +22,10 @@ const TeamInfo = ({ matchInfo }: matchInfoProps) => {
 
   //팀 별로 구분
   const [team1, team2] = [
-    matchInfo.data.info.participants.filter(
+    matchInfo.info.participants.filter(
       (item: SummonerTeam) => item.teamId == 100,
     ),
-    matchInfo.data.info.participants.filter(
+    matchInfo.info.participants.filter(
       (item: SummonerTeam) => item.teamId == 200,
     ),
   ]
@@ -30,7 +35,7 @@ const TeamInfo = ({ matchInfo }: matchInfoProps) => {
       team1: team1,
       team2: team2,
     })
-  }, [matchInfo, team1, team2])
+  }, [matchInfo])
 
   return (
     <Flex className="gap-[10px]">
@@ -39,9 +44,8 @@ const TeamInfo = ({ matchInfo }: matchInfoProps) => {
           <Flex align="center" key={index}>
             <button
               onClick={() => {
-                window.open(
+                router.push(
                   `/summoners/${item.riotIdGameName}-${item.riotIdTagline}`,
-                  '_blank',
                 )
               }}
               className="flex items-center"
@@ -54,7 +58,8 @@ const TeamInfo = ({ matchInfo }: matchInfoProps) => {
                 size="t1"
                 className="text-[#4D4D4D] ml-[5px] w-[70px] text-ellipsis overflow-hidden whitespace-nowrap"
               >
-                {item.riotIdGameName}
+                {/* {item.riotIdGameName} */}
+                유저 이름
               </Text>
             </button>
           </Flex>
@@ -65,10 +70,13 @@ const TeamInfo = ({ matchInfo }: matchInfoProps) => {
           <Flex align="center" key={index}>
             <button
               onClick={() => {
-                window.open(
+                router.push(
                   `/summoners/${item.riotIdGameName}-${item.riotIdTagline}`,
-                  '_blank',
                 )
+                // window.open(
+                //   `/summoners/${item.riotIdGameName}-${item.riotIdTagline}`,
+                //   '_blank',
+                // )
               }}
               className="flex items-center"
             >
@@ -80,7 +88,8 @@ const TeamInfo = ({ matchInfo }: matchInfoProps) => {
                 size="t1"
                 className="text-[#4D4D4D] ml-[5px] w-[70px] text-ellipsis overflow-hidden whitespace-nowrap"
               >
-                {item.riotIdGameName}
+                {/* {item.riotIdGameName} */}
+                유저 이름
               </Text>
             </button>
           </Flex>

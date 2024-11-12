@@ -1,4 +1,3 @@
-import axios from 'axios'
 import ContentTop from '@/app/components/shared/ContentTop'
 import Flex from '@/app/components/shared/Flex'
 import { asia_api_url, kr_api_url } from '@/constants/constants'
@@ -24,25 +23,20 @@ const Summoner = async ({ params }: { params: { id: string } }) => {
     tagLine: string
   }) => {
     try {
-      const response = await axios.get(
+      const response = await fetch(
         `${asia_api_url}riot/account/v1/accounts/by-riot-id/${gameName}/${tagLine}?api_key=${apiKey}`,
+        {
+          cache: 'force-cache', // 요청을 캐싱하도록 설정
+          next: { revalidate: 60 * 60 * 12 }, // 캐시 유효시간을 12시간으로 설정
+        },
       )
 
-      return response.data
-    } catch (error) {
-      console.error('데이터 불러오기에 실패하였습니다.', error)
-      throw error
-    }
-  }
+      if (!response.ok) {
+        throw new Error('데이터 불러오기 실패')
+      }
 
-  //puuid로 소환사 레벨과 아이콘 정보를 호출
-  const fetchSummonerInfo = async (summonerPuuid: string) => {
-    try {
-      const response = await axios.get(
-        `${kr_api_url}lol/summoner/v4/summoners/by-puuid/${summonerPuuid}?api_key=${apiKey}`,
-      )
-
-      return response.data
+      const data = await response.json()
+      return data
     } catch (error) {
       console.error('데이터 불러오기에 실패하였습니다.', error)
       throw error
@@ -54,6 +48,29 @@ const Summoner = async ({ params }: { params: { id: string } }) => {
     gameName: encodedGameName,
     tagLine: gameTag,
   })
+
+  //puuid로 소환사 레벨과 아이콘 정보를 호출
+  const fetchSummonerInfo = async (summonerPuuid: string) => {
+    try {
+      const response = await fetch(
+        `${kr_api_url}lol/summoner/v4/summoners/by-puuid/${summonerPuuid}?api_key=${apiKey}`,
+        {
+          cache: 'force-cache', // 요청을 캐싱하도록 설정
+          next: { revalidate: 60 * 60 * 12 }, // 캐시 유효시간을 12시간으로 설정
+        },
+      )
+
+      if (!response.ok) {
+        throw new Error('데이터 불러오기 실패')
+      }
+
+      const data = await response.json()
+      return data
+    } catch (error) {
+      console.error('데이터 불러오기에 실패하였습니다.', error)
+      throw error
+    }
+  }
 
   const summonerInfo = await fetchSummonerInfo(summonerData.puuid)
 
@@ -74,7 +91,8 @@ const Summoner = async ({ params }: { params: { id: string } }) => {
           </ProfileBox>
           <Flex align="end" className="gap-[5px]">
             <Text size="t3" weight="bold" className="mr-[5px]">
-              {summonerData.gameName}
+              {/* {summonerData.gameName} */}
+              유저 이름
             </Text>
             <Text size="t2" weight="light">
               #{summonerData.tagLine}
@@ -83,7 +101,7 @@ const Summoner = async ({ params }: { params: { id: string } }) => {
         </Flex>
       </ContentTop>
 
-      <MatchList summonerPuuid={summonerData.puuid} />
+      <MatchList playerPuuid={summonerData.puuid} />
     </>
   )
 }

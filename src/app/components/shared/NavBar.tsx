@@ -1,6 +1,6 @@
 'uss client'
 
-import Flex from '../../app/components/shared/Flex'
+import Flex from './Flex'
 import React from 'react'
 import { Kanit } from 'next/font/google'
 

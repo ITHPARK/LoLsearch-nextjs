@@ -1,7 +1,7 @@
 import './globals.css'
 
 import type { Metadata } from 'next'
-import NavBar from '@/components/shared/NavBar'
+import NavBar from '@/app/components/shared/NavBar'
 import RecoilProvider from '@/provider/RecoilProvider'
 import QueryProvider from '@/provider/QueryProvider'
 

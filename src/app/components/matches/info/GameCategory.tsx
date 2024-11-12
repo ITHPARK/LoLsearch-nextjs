@@ -16,9 +16,9 @@ const GameCategory = ({
 
   useEffect(() => {
     if (matchInfo && player) {
-      if (matchInfo.data.info.gameMode == 'CLASSIC') {
+      if (matchInfo.info.gameMode == 'CLASSIC') {
         setGameMode('클래식 모드')
-      } else if (matchInfo.data.info.gameMode == 'ARAM') {
+      } else if (matchInfo.info.gameMode == 'ARAM') {
         setGameMode('무작위 총력전')
       } else {
         setGameMode('특별 게임 모드')
@@ -32,7 +32,7 @@ const GameCategory = ({
         {gameMode}
       </Text>
       <Text display="block" size="t1" className="mt-[6px] text-[#4D4D4D]">
-        {`${Math.floor(matchInfo.data.info.gameDuration / 60)}분 ${matchInfo.data.info.gameDuration % 60}초`}
+        {`${Math.floor(matchInfo.info.gameDuration / 60)}분 ${matchInfo.info.gameDuration % 60}초`}
       </Text>
       <div className="mt-[10px]">
         <Text

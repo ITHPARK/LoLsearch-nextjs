@@ -1,3 +1,5 @@
+'use client'
+
 import React from 'react'
 import Flex from '@/app/components/shared/Flex'
 import Text from '@/app/components/shared/Text'
@@ -21,7 +23,7 @@ const ScoreInfo = ({
       </Text>
       <Text size="t2" className="text-[#4D4D4D]">
         CS : {player?.totalMinionsKilled} &nbsp;
-        {`(${(player?.totalMinionsKilled / Math.floor(matchInfo.data.info.gameDuration / 60)).toFixed(1)})`}
+        {`(${(player?.totalMinionsKilled / Math.floor(matchInfo.info.gameDuration / 60)).toFixed(1)})`}
       </Text>
       <Text size="t2" className="text-[#4D4D4D]">
         골드 : {player?.goldEarned}
