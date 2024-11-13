@@ -2,8 +2,8 @@
 
 import React, { useEffect, useState } from 'react'
 import Flex from '@/app/components/shared/Flex'
-import Text from '@/app/components/shared/Text'
 import TeamDetail from '@/app/components/matches/info/TeamDetail'
+import { playerInfoProps } from '@/models/type'
 
 const AllInfo = ({
   matchInfo,
@@ -13,7 +13,7 @@ const AllInfo = ({
   playerTeamId: number
 }) => {
   const [sortedTeam, setSortedTeam] = useState<Record<string, any>>([])
-  const [divideTeam, setDivideTeam] = useState<Record<string, any>[]>([])
+  const [divideTeam, setDivideTeam] = useState<playerInfoProps[][]>([])
 
   useEffect(() => {
     const team = matchInfo.info.teams.sort(
@@ -31,7 +31,7 @@ const AllInfo = ({
       },
     )
 
-    const divide: Record<string, any>[] = []
+    const divide: playerInfoProps[][] = []
 
     team.map(
       (item: Record<string, (string | null)[] | boolean | number | null>) => {
@@ -50,7 +50,7 @@ const AllInfo = ({
   }, [matchInfo, playerTeamId])
 
   return (
-    <div>
+    <Flex justify="between" className="gap-[20px]">
       {sortedTeam != null
         ? sortedTeam.map(
             (
@@ -68,7 +68,7 @@ const AllInfo = ({
             },
           )
         : ''}
-    </div>
+    </Flex>
   )
 }
 

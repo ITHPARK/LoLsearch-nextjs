@@ -7,6 +7,7 @@ interface ChampionProfileProps {
   level?: number
   rounded?: 'circle' | 'square'
   className?: string
+  levelClass?: string
 }
 
 const ChampionProfile = ({
@@ -14,6 +15,7 @@ const ChampionProfile = ({
   level,
   rounded = 'square',
   className = '',
+  levelClass = '',
 }: ChampionProfileProps) => {
   //챔피언 초상화 모양
   const championProfileShape = {
@@ -33,11 +35,7 @@ const ChampionProfile = ({
         src={`https://ddragon.leagueoflegends.com/cdn/14.22.1/img/champion/${name}.png`}
         alt={name}
       />
-      {level && (
-        <span className=" w-[20px] h-[20px] flex justify-center items-center absolute right-[3px] bottom-[3px] text-[14px] bg-[#000]">
-          {level || ''}
-        </span>
-      )}
+      {level && <span className={levelClass}>{level || ''}</span>}
     </div>
   )
 }

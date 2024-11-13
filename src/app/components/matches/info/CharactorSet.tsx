@@ -99,7 +99,8 @@ const CharactorSet = ({ player }: playerProps) => {
       <ChampionProfile
         name={player?.championName}
         level={player?.champLevel}
-        className="w-[80px] h-[80px] "
+        className="w-[80px] h-[80px]"
+        levelClass="w-[20px] h-[20px] flex justify-center items-center absolute right-[3px] bottom-[3px] text-[14px] bg-[#000]"
       />
 
       {/* 스펠 정보  */}
