@@ -14,6 +14,7 @@ import ScoreInfo from '@/app/components/matches/info/ScoreInfo'
 import TeamInfo from '@/app/components/matches/info/TeamInfo'
 import axios from 'axios'
 import { useQuery } from '@tanstack/react-query'
+import Skeleton from './Skeleton'
 
 const fetchGameInfo = async (matchid: string) => {
   const response = await axios.get(`/api/match/matchInfo/?matchId=${matchid}`)
@@ -21,6 +22,9 @@ const fetchGameInfo = async (matchid: string) => {
 }
 
 const MatchLow = ({ matchid }: { matchid: string }) => {
+  //low의 화살표을 눌러을때 상세정보를 펼치는 상태
+  const [Detail, setDetail] = useState<boolean>(false)
+
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [player, setPlayer] = useState<any>(null)
   const playerPuuid = useRecoilValue(summonerPuuid) //플레이어의 puuid
@@ -44,7 +48,7 @@ const MatchLow = ({ matchid }: { matchid: string }) => {
   }, [matchInfo, playerPuuid, player])
 
   if (matchInfoLoading) {
-    return <div>데이터를 로딩중입니다.</div>
+    return <Skeleton height={120} />
   }
 
   return (
@@ -69,6 +73,8 @@ const MatchLow = ({ matchid }: { matchid: string }) => {
           <TeamInfo matchInfo={matchInfo} />
         </Flex>
       </Flex>
+      {Detail && <div>상세정보</div>}
+
       <Flex
         justify="center"
         align="center"
@@ -77,7 +83,12 @@ const MatchLow = ({ matchid }: { matchid: string }) => {
           player?.win ? 'bg-decoWin' : 'bg-decoLose',
         )}
       >
-        <IoIosArrowDown fill="#fff" />
+        <button
+          className="w-full h-full flex justify-center items-center"
+          onClick={() => setDetail((prev) => !prev)}
+        >
+          <IoIosArrowDown fill="#fff" />
+        </button>
       </Flex>
     </Flex>
   )

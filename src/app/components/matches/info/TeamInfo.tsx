@@ -58,8 +58,7 @@ const TeamInfo = ({ matchInfo }: matchInfoProps) => {
                 size="t1"
                 className="text-[#4D4D4D] ml-[5px] w-[70px] text-ellipsis overflow-hidden whitespace-nowrap"
               >
-                {/* {item.riotIdGameName} */}
-                유저 이름
+                {item.riotIdGameName}
               </Text>
             </button>
           </Flex>
@@ -88,8 +87,7 @@ const TeamInfo = ({ matchInfo }: matchInfoProps) => {
                 size="t1"
                 className="text-[#4D4D4D] ml-[5px] w-[70px] text-ellipsis overflow-hidden whitespace-nowrap"
               >
-                {/* {item.riotIdGameName} */}
-                유저 이름
+                {item.riotIdGameName}
               </Text>
             </button>
           </Flex>

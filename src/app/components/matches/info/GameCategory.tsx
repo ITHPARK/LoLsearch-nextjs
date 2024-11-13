@@ -24,6 +24,8 @@ const GameCategory = ({
         setGameMode('특별 게임 모드')
       }
     }
+
+    console.log(matchInfo)
   }, [matchInfo, player])
 
   return (

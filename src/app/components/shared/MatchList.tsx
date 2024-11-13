@@ -9,6 +9,8 @@ import AllMatch from '../matches/AllMatch'
 import { useQuery } from '@tanstack/react-query'
 import { useSetRecoilState } from 'recoil'
 import { summonerPuuid } from '@/atom/summoner'
+import Flex from './Flex'
+import Skeleton from './Skeleton'
 
 const fetchMatchIds = async (puuid: string) => {
   const response = await axios.get(`/api/match/matches/?puuid=${puuid}`)
@@ -38,7 +40,17 @@ const MatchList = ({ playerPuuid }: MatchListProps) => {
   }, [playerPuuid, setPuuid])
 
   if (matchIdsLoading) {
-    return <ContentTop>로딩중입니다.</ContentTop>
+    return (
+      <ContentTop>
+        <Tab
+          labels={['전체', '솔로랭크']}
+          components={{
+            일반: <TabSkeleton />,
+            랭크: <TabSkeleton />,
+          }}
+        />
+      </ContentTop>
+    )
   }
 
   return (
@@ -55,3 +67,13 @@ const MatchList = ({ playerPuuid }: MatchListProps) => {
 }
 
 export default MatchList
+
+const TabSkeleton = () => {
+  return (
+    <Flex direction="col" className="gap-[5px]">
+      {Array.from({ length: 10 }).map((_, index: number) => {
+        return <Skeleton key={index} height={120} />
+      })}
+    </Flex>
+  )
+}

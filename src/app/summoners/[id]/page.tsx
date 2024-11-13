@@ -5,6 +5,7 @@ import ProfileBox from '@/app/components/shared/ProfileBox'
 import ImageBox from '@/app/components/shared/ImageBox'
 import Text from '@/app/components/shared/Text'
 import MatchList from '@/app/components/shared/MatchList'
+import { notFound } from 'next/navigation'
 
 const Summoner = async ({ params }: { params: { id: string } }) => {
   const { id } = params // 경로 파라미터에서 'id'를 가져옴
@@ -32,7 +33,7 @@ const Summoner = async ({ params }: { params: { id: string } }) => {
       )
 
       if (!response.ok) {
-        throw new Error('데이터 불러오기 실패')
+        notFound()
       }
 
       const data = await response.json()
@@ -60,6 +61,7 @@ const Summoner = async ({ params }: { params: { id: string } }) => {
         },
       )
 
+      //잘못된 api 요청일 때
       if (!response.ok) {
         throw new Error('데이터 불러오기 실패')
       }
@@ -91,8 +93,7 @@ const Summoner = async ({ params }: { params: { id: string } }) => {
           </ProfileBox>
           <Flex align="end" className="gap-[5px]">
             <Text size="t3" weight="bold" className="mr-[5px]">
-              {/* {summonerData.gameName} */}
-              유저 이름
+              {summonerData.gameName}
             </Text>
             <Text size="t2" weight="light">
               #{summonerData.tagLine}
