@@ -82,9 +82,9 @@ const CharactorSet = ({ player }: playerProps) => {
         (data: any) => data.id == player.perks.styles[0].selections[0].perk,
       )[0]?.icon
 
-      console.log(player.championName) //챔피언 이름
-      console.log(perksData.data.mainPerkData[0].slots[0].runes) //해당 플레이어가 선택한 룬 카테고리 배열
-      console.log(player.perks.styles[0].selections[0].perk) //해당 플레이어가 선택한 룬정보
+      // console.log(player.championName) //챔피언 이름
+      // console.log(perksData.data.mainPerkData[0].slots[0].runes) //해당 플레이어가 선택한 룬 카테고리 배열
+      // console.log(player.perks.styles[0].selections[0].perk) //해당 플레이어가 선택한 룬정보
 
       setRune({
         mainRune: mainPerkImg,

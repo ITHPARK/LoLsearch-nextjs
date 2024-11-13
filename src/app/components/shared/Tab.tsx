@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react'
 import Flex from '@/app/components/shared/Flex'
+import classNames from 'classnames'
 
 // 컴포넌트 타입. 확장이 불가능하도록 type사용
 type TabComponents = {
@@ -11,25 +12,39 @@ type TabComponents = {
 interface TabComponentProps {
   labels: string[]
   components: TabComponents
+  flexoption?: string
+  buttonClass?: string
+  pageClass?: string
+  focusColor?: string
+  unFocusColor?: string
 }
 
-const Tab = ({ labels, components }: TabComponentProps) => {
+const Tab = ({
+  labels,
+  components,
+  flexoption,
+  buttonClass,
+  pageClass,
+  focusColor,
+  unFocusColor,
+}: TabComponentProps) => {
   const [focusTab, setFocusTab] = useState<string>(Object.keys(components)[0])
-
-  const focusColor = {
-    focused: 'bg-[#363742]',
-    unFocused: 'bg-[#24252F]',
-  }
 
   return (
     <Flex direction="col">
-      <Flex>
+      <Flex className={classNames(flexoption)}>
         {labels.map((label, index) => {
           return (
             <button
               key={index}
               onClick={() => setFocusTab(Object.keys(components)[index])}
-              className={`px-[15px] py-[10px]  rounded-tl-[5px] rounded-tr-[5px] ${focusTab == Object.keys(components)[index] ? focusColor.focused : focusColor.unFocused}  `}
+              className={classNames(buttonClass)}
+              style={{
+                backgroundColor:
+                  focusTab === Object.keys(components)[index]
+                    ? focusColor
+                    : unFocusColor,
+              }}
             >
               {label}
             </button>
@@ -37,9 +52,7 @@ const Tab = ({ labels, components }: TabComponentProps) => {
         })}
       </Flex>
 
-      <div className=" p-[15px] bg-[#363742] overflow-hidden rounded-tr-[10px] rounded-bl-[5px] rounded-br-[5px]">
-        {components[focusTab]}
-      </div>
+      <div className={classNames(pageClass)}>{components[focusTab]}</div>
     </Flex>
   )
 }

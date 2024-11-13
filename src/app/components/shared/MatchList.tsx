@@ -61,6 +61,10 @@ const MatchList = ({ playerPuuid }: MatchListProps) => {
           일반: <AllMatch matchIds={matchIds ?? []} />,
           랭크: <div />,
         }}
+        buttonClass="px-[15px] py-[10px]  rounded-tl-[5px] rounded-tr-[5px]"
+        pageClass="p-[15px] bg-[#363742] overflow-hidden rounded-tr-[10px] rounded-bl-[5px] rounded-br-[5px]"
+        focusColor="#363742"
+        unFocusColor="#24252F"
       />
     </ContentTop>
   )

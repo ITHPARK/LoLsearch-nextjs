@@ -12,9 +12,11 @@ import KillDeathInfo from '@/app/components/matches/info/KillDeathInfo'
 import ItemInfo from '@/app/components/matches/info/ItemInfo'
 import ScoreInfo from '@/app/components/matches/info/ScoreInfo'
 import TeamInfo from '@/app/components/matches/info/TeamInfo'
+import AllInfo from '@/app/components/matches/info/AllInfo'
+import Tab from '@/app/components/shared/Tab'
+import Skeleton from './Skeleton'
 import axios from 'axios'
 import { useQuery } from '@tanstack/react-query'
-import Skeleton from './Skeleton'
 
 const fetchGameInfo = async (matchid: string) => {
   const response = await axios.get(`/api/match/matchInfo/?matchId=${matchid}`)
@@ -55,7 +57,7 @@ const MatchLow = ({ matchid }: { matchid: string }) => {
     <Flex direction="col" className="bg-transparent">
       <Flex
         className={classNames(
-          'p-[10px] rounded-tl-[3px] rounded-tr-[3px]',
+          'p-[10px] rounded-tl-[3px] rounded-tr-[3px] ',
           player?.win ? 'bg-matchResultWin' : 'bg-matchResultLose',
         )}
       >
@@ -73,7 +75,22 @@ const MatchLow = ({ matchid }: { matchid: string }) => {
           <TeamInfo matchInfo={matchInfo} />
         </Flex>
       </Flex>
-      {Detail && <div>상세정보</div>}
+      {Detail && (
+        <div className="p-[15px] bg-white shadow-detailBox">
+          <Tab
+            labels={['종합']}
+            components={{
+              종합: (
+                <AllInfo matchInfo={matchInfo} playerTeamId={player.teamId} />
+              ),
+            }}
+            flexoption="gap-[10px]"
+            buttonClass="px-[40px] py-[10px]  rounded-tl-[3px] rounded-[3px] text-[#4D4D4D]"
+            pageClass="mt-[10px] overflow-hidden rounded-tr-[10px] rounded-bl-[3px] rounded-br-[3px]"
+            focusColor={player.win ? '#ECF2FF' : '#fff1f3'}
+          />
+        </div>
+      )}
 
       <Flex
         justify="center"
@@ -87,7 +104,10 @@ const MatchLow = ({ matchid }: { matchid: string }) => {
           className="w-full h-full flex justify-center items-center"
           onClick={() => setDetail((prev) => !prev)}
         >
-          <IoIosArrowDown fill="#fff" />
+          <IoIosArrowDown
+            fill="#fff"
+            className={classNames(Detail ? 'rotate-180' : '')}
+          />
         </button>
       </Flex>
     </Flex>

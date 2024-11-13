@@ -16,6 +16,10 @@ module.exports = {
         matchResultWin: '#ECF2FF',
         matchResultLose: '#fff1f3',
       },
+      boxShadow: {
+        detailBox:
+          'inset 0px 1px 2px rgba(0, 0, 0, 0.4), inset 0px 1px 2px rgba(0, 0, 0, 0.4)',
+      },
       fontFamily: {
         kanit: ['Kanit', 'serif'],
       },
