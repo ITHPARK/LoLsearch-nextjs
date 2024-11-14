@@ -2,9 +2,9 @@ import React, { useState, useEffect } from 'react'
 import Flex from '@/app/components/shared/Flex'
 import ImageBox from '@/app/components/shared/ImageBox'
 import ChampionProfile from '@/app/components/shared/ChampionProfile'
-import axios from 'axios'
 import { useQuery } from '@tanstack/react-query'
-import { playerProps } from '@/models/type'
+import { infoCommonType } from '@/models/type'
+import { fetchSpell, fetchPerks } from '@/apiFunction'
 
 interface SummonerSpellProps {
   [key: string]: string
@@ -14,18 +14,7 @@ interface SummonerRuneProps {
   [key: string]: string | null
 }
 
-const fetchSpell = async (spell1: string, spell2: string) => {
-  return await axios.get(
-    `/api/summonerSpell/?spell1=${spell1}&spell2=${spell2}`,
-  )
-}
-const fetchPerks = async (mainPerk: string, subPerk: string) => {
-  return await axios.get(
-    `/api/summonerRunes/?mainPerk=${mainPerk}&subPerk=${subPerk}`,
-  )
-}
-
-const CharactorSet = ({ player }: playerProps) => {
+const CharactorSet = ({ player }: infoCommonType) => {
   //소환사 스펠
   const [spell, setSpell] = useState<SummonerSpellProps>({
     spell1: '',
@@ -68,8 +57,8 @@ const CharactorSet = ({ player }: playerProps) => {
     //스펠 state 업데이트
     if (spellData != null) {
       setSpell({
-        spell1: spellData.data.spells1[0].id,
-        spell2: spellData.data.spells2[0].id,
+        spell1: spellData.spells1[0].id,
+        spell2: spellData.spells2[0].id,
       })
     }
   }, [spellData])
@@ -77,7 +66,7 @@ const CharactorSet = ({ player }: playerProps) => {
   useEffect(() => {
     if (player != null && player.perks != null && perksData != null) {
       //룬 플레이어가 선택한 룬 카테고리를 순회하면서 플레이어가 선택한 룬 정보를 필터링함
-      const mainPerkImg = perksData.data.mainPerkData[0].slots[0].runes.filter(
+      const mainPerkImg = perksData.mainPerkData[0].slots[0].runes.filter(
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         (data: any) => data.id == player.perks.styles[0].selections[0].perk,
       )[0]?.icon
@@ -88,7 +77,7 @@ const CharactorSet = ({ player }: playerProps) => {
 
       setRune({
         mainRune: mainPerkImg,
-        subRune: perksData.data.subPerkData[0].icon,
+        subRune: perksData.subPerkData[0].icon,
       })
     }
   }, [player, perksData])

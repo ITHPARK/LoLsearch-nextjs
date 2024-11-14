@@ -3,7 +3,6 @@
 import React, { useEffect } from 'react'
 import ContentTop from '@/app/components/shared/ContentTop'
 import Tab from '@/app/components/shared/Tab'
-import axios from 'axios'
 import AllMatch from '../matches/AllMatch'
 
 import { useQuery } from '@tanstack/react-query'
@@ -11,11 +10,7 @@ import { useSetRecoilState } from 'recoil'
 import { summonerPuuid } from '@/atom/summoner'
 import Flex from './Flex'
 import Skeleton from './Skeleton'
-
-const fetchMatchIds = async (puuid: string) => {
-  const response = await axios.get(`/api/match/matches/?puuid=${puuid}`)
-  return response.data
-}
+import { fetchMatchIds } from '@/apiFunction'
 
 // Props 타입 정의
 interface MatchListProps {

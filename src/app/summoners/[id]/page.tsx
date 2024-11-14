@@ -1,11 +1,10 @@
 import ContentTop from '@/app/components/shared/ContentTop'
 import Flex from '@/app/components/shared/Flex'
-import { asia_api_url, kr_api_url } from '@/constants/constants'
 import ProfileBox from '@/app/components/shared/ProfileBox'
 import ImageBox from '@/app/components/shared/ImageBox'
 import Text from '@/app/components/shared/Text'
 import MatchList from '@/app/components/shared/MatchList'
-import { notFound } from 'next/navigation'
+import { fetchSummoner, fetchSummonerInfo } from '@/apiFunction'
 
 const Summoner = async ({ params }: { params: { id: string } }) => {
   const { id } = params // 경로 파라미터에서 'id'를 가져옴
@@ -13,66 +12,12 @@ const Summoner = async ({ params }: { params: { id: string } }) => {
   const [gameName, gameTag] = id.split('-')
 
   const encodedGameName = decodeURIComponent(gameName)
-  const apiKey = process.env.NEXT_PUBLIC_API_KEY
-
-  //소환사 정보 불러오기 (puuid 받아오기)
-  const fetchSummoner = async ({
-    gameName,
-    tagLine,
-  }: {
-    gameName: string
-    tagLine: string
-  }) => {
-    try {
-      const response = await fetch(
-        `${asia_api_url}riot/account/v1/accounts/by-riot-id/${gameName}/${tagLine}?api_key=${apiKey}`,
-        {
-          cache: 'force-cache', // 요청을 캐싱하도록 설정
-          next: { revalidate: 60 * 60 * 12 }, // 캐시 유효시간을 12시간으로 설정
-        },
-      )
-
-      if (!response.ok) {
-        notFound()
-      }
-
-      const data = await response.json()
-      return data
-    } catch (error) {
-      console.error('데이터 불러오기에 실패하였습니다.', error)
-      throw error
-    }
-  }
 
   //소환사 데이터 요청
   const summonerData = await fetchSummoner({
     gameName: encodedGameName,
     tagLine: gameTag,
   })
-
-  //puuid로 소환사 레벨과 아이콘 정보를 호출
-  const fetchSummonerInfo = async (summonerPuuid: string) => {
-    try {
-      const response = await fetch(
-        `${kr_api_url}lol/summoner/v4/summoners/by-puuid/${summonerPuuid}?api_key=${apiKey}`,
-        {
-          cache: 'force-cache', // 요청을 캐싱하도록 설정
-          next: { revalidate: 60 * 60 * 12 }, // 캐시 유효시간을 12시간으로 설정
-        },
-      )
-
-      //잘못된 api 요청일 때
-      if (!response.ok) {
-        throw new Error('데이터 불러오기 실패')
-      }
-
-      const data = await response.json()
-      return data
-    } catch (error) {
-      console.error('데이터 불러오기에 실패하였습니다.', error)
-      throw error
-    }
-  }
 
   const summonerInfo = await fetchSummonerInfo(summonerData.puuid)
 

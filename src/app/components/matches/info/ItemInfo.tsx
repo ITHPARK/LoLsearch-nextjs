@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react'
 import Flex from '@/app/components/shared/Flex'
 import ImageBox from '@/app/components/shared/ImageBox'
-import { playerProps } from '@/models/type'
+import { infoCommonType } from '@/models/type'
 
 interface SummonerItem {
   line1: number[]
   line2: number[]
 }
 
-const ItemInfo = ({ player }: playerProps) => {
+const ItemInfo = ({ player }: infoCommonType) => {
   //아이템 정보
   const [itemData, setitemData] = useState<SummonerItem>({
     line1: [],

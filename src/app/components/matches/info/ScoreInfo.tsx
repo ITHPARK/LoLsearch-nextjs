@@ -3,15 +3,14 @@
 import React from 'react'
 import Flex from '@/app/components/shared/Flex'
 import Text from '@/app/components/shared/Text'
-import { playerProps } from '@/models/type'
-import { matchInfoProps } from '@/models/type'
+import { infoCommonType } from '@/models/type'
 
 const ScoreInfo = ({
   player,
   matchInfo,
 }: {
-  player: playerProps
-  matchInfo: matchInfoProps
+  player: infoCommonType
+  matchInfo: infoCommonType
 }) => {
   return (
     <Flex direction="col" justify="center" className=" gap-[5px]">

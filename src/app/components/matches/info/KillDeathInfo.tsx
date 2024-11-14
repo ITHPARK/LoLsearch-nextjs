@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import Flex from '@/app/components/shared/Flex'
 import Text from '@/app/components/shared/Text'
-import { playerProps } from '@/models/type'
+import { infoCommonType } from '@/models/type'
 
-const KillDeathInfo = ({ player }: playerProps) => {
+const KillDeathInfo = ({ player }: infoCommonType) => {
   //연속킬 정보
   const [kills, setKills] = useState<React.ReactNode>(null)
 

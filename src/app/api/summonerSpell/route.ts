@@ -21,8 +21,6 @@ export const GET = async (req: NextRequest) => {
       ),
     )
 
-    console.log(spellsQuery1.docs)
-
     // spellsQuery.docs에서 각 문서의 데이터를 가져와 배열로 변환
     const spells1 = spellsQuery1.docs.map((doc) => doc.data())
 
