@@ -14,7 +14,7 @@ const AllInfo = ({
 }) => {
   const [sortedTeam, setSortedTeam] = useState<infoCommonType[]>([])
   const [divideTeam, setDivideTeam] = useState<infoCommonType[][]>([])
-  const [bestDamage, setBestDamage] = useState<number>(0)
+  const [bestDamage, setBestDamage] = useState<number[]>([0, 0])
 
   useEffect(() => {
     const team = matchInfo.info.teams.sort(
@@ -50,10 +50,8 @@ const AllInfo = ({
     const maxDamage = [...matchInfo.info.participants].sort(
       //각 챔프의 피해량을 기준으로 정렬
       (a: infoCommonType, b: infoCommonType) => {
-        const damageA =
-          a.magicDamageDealtToChampions + a.physicalDamageDealtToChampions
-        const damageB =
-          b.magicDamageDealtToChampions + b.physicalDamageDealtToChampions
+        const damageA = a.totalDamageDealtToChampions
+        const damageB = b.totalDamageDealtToChampions
 
         if (damageA > damageB) return -1 //damageA가 damageB 보다 크면 damageA가 앞에 위치
         if (damageA < damageB) return 1 //damageB가 damageA 보다 크면 damageB가 앞에 위치
@@ -62,10 +60,24 @@ const AllInfo = ({
       },
     )
 
-    setBestDamage(
-      maxDamage[0].magicDamageDealtToChampions +
-        maxDamage[0].physicalDamageDealtToChampions,
+    //게임내 최고 받은피해량 구하기
+    const maxTakenDamage = [...matchInfo.info.participants].sort(
+      //각 챔프의 피해량을 기준으로 정렬
+      (a: infoCommonType, b: infoCommonType) => {
+        const damageA = a.totalDamageTaken
+        const damageB = b.totalDamageTaken
+
+        if (damageA > damageB) return -1 //damageA가 damageB 보다 크면 damageA가 앞에 위치
+        if (damageA < damageB) return 1 //damageB가 damageA 보다 크면 damageB가 앞에 위치
+
+        return 0
+      },
     )
+
+    setBestDamage([
+      maxDamage[0].totalDamageDealtToChampions,
+      maxTakenDamage[0].totalDamageTaken,
+    ])
 
     setDivideTeam(divide)
     setSortedTeam(team)

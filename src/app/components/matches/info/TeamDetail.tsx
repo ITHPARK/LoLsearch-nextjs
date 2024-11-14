@@ -13,7 +13,7 @@ import { useQuery } from '@tanstack/react-query'
 interface playersProps {
   teamInfo: infoCommonType
   divide: infoCommonType[]
-  bestDamage: number
+  bestDamage: number[]
 }
 
 //팀 전체 스펠 가져오기
@@ -87,12 +87,12 @@ const TeamDetail = ({ teamInfo, divide, bestDamage }: playersProps) => {
   }, [teamPerks, divide])
 
   useEffect(() => {
-    console.log(teamInfo)
-  }, [teamInfo])
-
-  useEffect(() => {
     console.log(divide)
   }, [divide])
+
+  useEffect(() => {
+    console.log(teamInfo)
+  }, [teamInfo])
 
   if (teamSpellLoading || teamPerksLoading) {
     return <div className="text-[#4D4D4D]">로딩중</div>
@@ -195,24 +195,82 @@ const TeamDetail = ({ teamInfo, divide, bestDamage }: playersProps) => {
               </Text>
             </Flex>
 
+            {/* 아이템  */}
+            <Flex align="center" className="ml-[35px] gap-[3px]">
+              {Array.from({ length: 7 }).map((_, index: number) => {
+                return (
+                  <div
+                    key={index}
+                    className="w-[30px] h-[30px] rounded-[3px] overflow-hidden"
+                  >
+                    {item['item' + index] > 0 ? (
+                      <ImageBox
+                        src={`https://ddragon.leagueoflegends.com/cdn/14.22.1/img/item/${item['item' + index]}.png`}
+                      />
+                    ) : (
+                      <div className="w-[30px] h-[30px] bg-[#c4c2be] shadow-[inset_0_1px_4px_rgba(0,0,0,0.6)]"></div>
+                    )}
+                  </div>
+                )
+              })}
+            </Flex>
+
             {/* 챔피언 피해량 */}
-            <Flex align="center" className="ml-[40px]">
+            <Flex align="center" className="ml-[55px] gap-[20px]">
+              {/* 입힌 피해량 */}
               <Flex direction="col" align="center" className="gap-[3px]">
                 <Text size="t1" className="text-[#4D4D4D] tracking-[-0.03em]">
-                  {(
-                    item.magicDamageDealtToChampions +
-                    item.physicalDamageDealtToChampions
-                  ).toLocaleString()}
+                  {item.totalDamageDealtToChampions.toLocaleString()}
                 </Text>
                 <div className="w-[100px] h-[10px] bg-[#ddd]">
                   <div
                     style={{
-                      width: `${parseFloat(((item.magicDamageDealtToChampions + item.physicalDamageDealtToChampions) / bestDamage).toFixed(2)) * 100}%`,
+                      width: `${parseFloat((item.totalDamageDealtToChampions / bestDamage[0]).toFixed(2)) * 100}%`,
                       height: '100%',
                       background: 'red',
                     }}
                   ></div>
                 </div>
+              </Flex>
+              {/* 받은 피해량 */}
+              <Flex direction="col" align="center" className="gap-[3px]">
+                <Text size="t1" className="text-[#4D4D4D] tracking-[-0.03em]">
+                  {item.totalDamageTaken.toLocaleString()}
+                </Text>
+                <div className="w-[100px] h-[10px] bg-[#ddd]">
+                  <div
+                    style={{
+                      width: `${parseFloat((item.totalDamageTaken / bestDamage[1]).toFixed(2)) * 100}%`,
+                      height: '100%',
+                      background: 'red',
+                    }}
+                  ></div>
+                </div>
+              </Flex>
+            </Flex>
+
+            {/* 시야 */}
+            <Flex
+              direction="col"
+              align="center"
+              justify="center"
+              className=" ml-[50px] flex-1 gap-[3px]"
+            >
+              <Text size="t1" className="text-[#4D4D4D]">
+                시야
+              </Text>
+              <Flex className="gap-[5px] text-[#4D4D4D]">
+                <Text size="t1" className="text-[#4D4D4D]">
+                  {item.wardsPlaced}
+                </Text>
+                /
+                <Text size="t1" className="text-[#4D4D4D]">
+                  {item.wardsKilled}
+                </Text>
+                /
+                <Text size="t1" className="text-[#4D4D4D]">
+                  {item.visionWardsBoughtInGame}
+                </Text>
               </Flex>
             </Flex>
           </Flex>
