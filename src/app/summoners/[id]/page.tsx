@@ -4,7 +4,11 @@ import ProfileBox from '@/app/components/shared/ProfileBox'
 import ImageBox from '@/app/components/shared/ImageBox'
 import Text from '@/app/components/shared/Text'
 import MatchList from '@/app/components/shared/MatchList'
-import { fetchSummoner, fetchSummonerInfo } from '@/apiFunction'
+import {
+  fetchSummoner,
+  fetchSummonerInfo,
+  fetchSummonerRank,
+} from '@/apiFunction'
 
 const Summoner = async ({ params }: { params: { id: string } }) => {
   const { id } = params // 경로 파라미터에서 'id'를 가져옴
@@ -20,6 +24,10 @@ const Summoner = async ({ params }: { params: { id: string } }) => {
   })
 
   const summonerInfo = await fetchSummonerInfo(summonerData.puuid)
+
+  const summonerRank = await fetchSummonerRank(summonerInfo.id)
+
+  console.log(summonerRank)
 
   return (
     <>
@@ -44,6 +52,9 @@ const Summoner = async ({ params }: { params: { id: string } }) => {
               #{summonerData.tagLine}
             </Text>
           </Flex>
+        </Flex>
+        <Flex>
+          <div></div>
         </Flex>
       </ContentTop>
 

@@ -86,7 +86,7 @@ const MatchLow = ({ matchid }: { matchid: string }) => {
             }}
             flexoption="gap-[10px]"
             buttonClass="px-[40px] py-[10px]  rounded-tl-[3px] rounded-[3px] text-[#4D4D4D]"
-            pageClass="mt-[10px] overflow-hidden rounded-tr-[10px] rounded-bl-[3px] rounded-br-[3px]"
+            pageClass="mt-[10px] "
             focusColor={player.win ? '#ECF2FF' : '#fff1f3'}
           />
         </div>
