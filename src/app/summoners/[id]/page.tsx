@@ -1,9 +1,10 @@
 import ContentTop from '@/app/components/shared/ContentTop'
-import Flex from '@/app/components/shared/Flex'
 import ProfileBox from '@/app/components/shared/ProfileBox'
 import ImageBox from '@/app/components/shared/ImageBox'
+import Flex from '@/app/components/shared/Flex'
 import Text from '@/app/components/shared/Text'
 import MatchList from '@/app/components/shared/MatchList'
+import SummonerRank from '@/app/components/summoner/SummonerRank'
 import {
   fetchSummoner,
   fetchSummonerInfo,
@@ -23,11 +24,11 @@ const Summoner = async ({ params }: { params: { id: string } }) => {
     tagLine: gameTag,
   })
 
+  //소환사의 레벨, 아이콘 정보 요청
   const summonerInfo = await fetchSummonerInfo(summonerData.puuid)
 
+  //소환사의 랭크 정보 요청
   const summonerRank = await fetchSummonerRank(summonerInfo.id)
-
-  console.log(summonerRank)
 
   return (
     <>
@@ -53,9 +54,8 @@ const Summoner = async ({ params }: { params: { id: string } }) => {
             </Text>
           </Flex>
         </Flex>
-        <Flex>
-          <div></div>
-        </Flex>
+
+        <SummonerRank summonerRank={summonerRank} />
       </ContentTop>
 
       <MatchList playerPuuid={summonerData.puuid} />
