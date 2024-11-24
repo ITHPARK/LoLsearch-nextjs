@@ -18,6 +18,8 @@ const Summoner = async ({ params }: { params: { id: string } }) => {
 
   const encodedGameName = decodeURIComponent(gameName)
 
+  console.log(gameName, gameTag)
+
   //소환사 데이터 요청
   const summonerData = await fetchSummoner({
     gameName: encodedGameName,
@@ -29,6 +31,8 @@ const Summoner = async ({ params }: { params: { id: string } }) => {
 
   //소환사의 랭크 정보 요청
   const summonerRank = await fetchSummonerRank(summonerInfo.id)
+
+  console.log(summonerRank)
 
   return (
     <>

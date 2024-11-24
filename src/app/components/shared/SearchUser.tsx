@@ -36,10 +36,10 @@ const SearchUser = () => {
   }
 
   return (
-    <Flex className="px-[15px] py-[8px] mx-auto w-[500px] bg-white rounded-[25px]  overflow-hidden">
+    <Flex className="px-[15px] py-[8px] mx-auto my-[40px] w-[500px] border-[2px] border-solid border-[#000] rounded-[25px] overflow-hidden bg-[#fff] shadow-serchShadow">
       <input
         type="text"
-        className=" w-full block outline-none"
+        className=" w-full block outline-none "
         placeholder="소환사 이름+#태그"
         value={search}
         onChange={handleChangeValue}
@@ -47,7 +47,7 @@ const SearchUser = () => {
       />
       <button
         type="button"
-        className="p-[6px] cursor-pointer bg-darkGray rounded-[50%]"
+        className="p-[6px] cursor-pointer bg-[#000] rounded-[50%]"
         onClick={handleClickSearch}
       >
         <IoSearch className="text-white text-[20px]" />

@@ -21,7 +21,7 @@ export default function RootLayout({
         <html lang="en">
           <body className="pt-[60px]" suppressHydrationWarning>
             <NavBar />
-            <div className="mx-auto w-full max-w-[1080px]">{children}</div>
+            <div className="mx-auto w-full h-full">{children}</div>
           </body>
         </html>
       </RecoilProvider>

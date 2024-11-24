@@ -15,37 +15,57 @@ const SummonerRank = ({ summonerRank }: SummonerRankProps) => {
     hoverBackgroundColor: [],
   })
   useEffect(() => {
-    console.log(summonerRank)
-
-    setCartDataArr({
-      labels: ['승리', '패배'],
-      chartData: [summonerRank[0].wins, summonerRank[0].losses],
-      backgroundColor: ['#5383E8', '#E84057'],
-    })
+    //랭크 정보가 있을 때  state 업데이트
+    if (summonerRank.length > 0) {
+      setCartDataArr({
+        labels: ['승리', '패배'],
+        chartData: [summonerRank[0].wins, summonerRank[0].losses],
+        backgroundColor: ['#5383E8', '#E84057'],
+      })
+    }
   }, [summonerRank])
 
   return (
     <Flex className="mt-[30px]">
-      <Flex className="p-[10px] bg-[#363742] rounded-[5px]">
+      <Flex className="p-[15px] gap-[20px] bg-[#363742] rounded-[5px] ">
         <div>
           <div className="w-[150px] h-[150px]">
-            <ImageBox src={`/tier/${summonerRank[0].tier}.png`} />
+            {summonerRank.length > 0 ? (
+              <ImageBox src={`/tier/${summonerRank[0].tier}.png`} />
+            ) : (
+              <ImageBox src={`/tier/UNRANKED.png`} />
+            )}
           </div>
-          <Text size="t2" display="block" textAlign="center">
-            {summonerRank[0].tier}&nbsp;
-            {summonerRank[0].rank}
-          </Text>
+          {summonerRank.length > 0 ? (
+            <Text size="t2" display="block" textAlign="center">
+              {summonerRank[0].tier}&nbsp;
+              {summonerRank[0].rank}
+            </Text>
+          ) : (
+            <Text size="t2" display="block" textAlign="center">
+              UNRANKED
+            </Text>
+          )}
         </div>
-        <Flex>
-          <Text size="t2">개인/랭크</Text>
-          <div></div>
+        <Flex direction="col">
+          <Text size="t2" textAlign="center">
+            개인 / 랭크
+          </Text>
+          <Flex justify="center" align="center" className="flex-1">
+            {summonerRank.length > 0 ? (
+              <DoughnutChart
+                labels={cartDataArr?.labels}
+                chartData={cartDataArr?.chartData}
+                backgroundColor={cartDataArr?.backgroundColor}
+              />
+            ) : (
+              <Text display="block" size="t2">
+                랭크게임 정보가 없습니다.
+              </Text>
+            )}
+          </Flex>
         </Flex>
       </Flex>
-      <DoughnutChart
-        labels={cartDataArr?.labels}
-        chartData={cartDataArr?.chartData}
-        backgroundColor={cartDataArr?.backgroundColor}
-      />
     </Flex>
   )
 }

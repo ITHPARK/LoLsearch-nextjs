@@ -1,11 +1,16 @@
 import React from 'react'
+import classNames from 'classnames'
 
-const ContentTop = ({ children }: { children: React.ReactNode }) => {
+const ContentTop = ({
+  children,
+  className,
+}: {
+  children: React.ReactNode
+  className?: string
+}) => {
   return (
-    <div className="pt-[20px]">
-      <div className="p-[15px] bg-[#2C2E3C] border-solid border-[1px] border-[#3A3D45] rounded-[5px]">
-        {children}
-      </div>
+    <div className={classNames(className, 'mx-auto')}>
+      <div>{children}</div>
     </div>
   )
 }

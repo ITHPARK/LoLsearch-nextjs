@@ -19,6 +19,7 @@ module.exports = {
       boxShadow: {
         detailBox:
           'inset 0px 1px 2px rgba(0, 0, 0, 0.4), inset 0px 1px 2px rgba(0, 0, 0, 0.4)',
+        serchShadow: '1px 3px 2px rgba(0, 0, 0, 0.2)',
       },
       fontFamily: {
         kanit: ['Kanit', 'serif'],

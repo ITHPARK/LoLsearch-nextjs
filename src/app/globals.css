@@ -127,7 +127,8 @@ summary,
 time,
 mark,
 audio,
-video {
+video,
+p {
   margin: 0;
   padding: 0;
   border: 0;
@@ -175,12 +176,17 @@ table {
   border-spacing: 0;
 }
 
+html, body {
+  height: 100%; /* html과 body의 높이를 100%로 고정 */
+  margin: 0; /* 기본 margin 제거 */
+}
+
 body {
-  background-color: #363742;
+  min-height: 100vh; /* body는 최소 100vh를 가지도록 설정 */
 }
 
 input {
-  color: #333;
+  color: #0e0707;
 }
 .img-container {
   width: 100%;

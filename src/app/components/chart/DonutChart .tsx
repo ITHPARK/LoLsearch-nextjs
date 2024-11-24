@@ -13,10 +13,10 @@ const DoughnutChart = ({ labels, chartData, backgroundColor }: ChartData) => {
     labels: labels,
     datasets: [
       {
-        label: 'Dataset',
+        label: '승률',
         data: chartData,
         backgroundColor: backgroundColor,
-        hoverOffset: 4,
+        hoverOffset: 20,
       },
     ],
   }
