@@ -4,36 +4,27 @@ import LotationChampion from '@/app/components/shared/LotationChampion'
 import ContentTop from '@/app/components/shared/ContentTop'
 import ChallengerRanking from '@/app/components/ChallengerRanking'
 import Flex from '@/app/components/shared/Flex'
-import { Suspense } from 'react'
+import Text from '@/app/components/shared/Text'
+// import { Suspense } from 'react'
 
 const Home = () => {
   return (
     <div className="h-full">
       <SearchUser />
 
-      <Flex direction="col" className=" pt-[30px] h-full  flex-1 bg-[#000]">
-        <ContentTop className="w-[500px]">
-          {/* Suspense를 사용하면 감싸준 컴포넌트는 로딩이 모두 되지 않아도 fallback 컴포넌트를 출력하면서 다른 요소들이 렌더링 됨  */}
-          {/* <Suspense fallback={<p>Loading...</p>}> */}
+      <Flex direction="col" className=" pt-[50px] h-full  flex-1 bg-[#000]">
+        <ContentTop className="mb-[50px] w-[500px]">
+          <Text size="t3" weight="bold" display="block mb-[15px]">
+            챌린저 TOP 10
+          </Text>
           <ChallengerRanking />
-          {/* </Suspense> */}
-          {/* <Test></Test> */}
         </ContentTop>
 
-        <ContentTop className="w-[1080px]">
-          {/* Suspense를 사용하면 감싸준 컴포넌트는 로딩이 모두 되지 않아도 fallback 컴포넌트를 출력하면서 다른 요소들이 렌더링 됨  */}
-          {/* <Suspense fallback={<p>Loading...</p>}> */}
+        <ContentTop className="w-[500px]">
+          <Text size="t3" weight="bold" display="block mb-[15px]">
+            로테이션 챔피언
+          </Text>
           <LotationChampion />
-          {/* </Suspense> */}
-          {/* <Test></Test> */}
-        </ContentTop>
-
-        <ContentTop className="w-[1080px]">
-          {/* Suspense를 사용하면 감싸준 컴포넌트는 로딩이 모두 되지 않아도 fallback 컴포넌트를 출력하면서 다른 요소들이 렌더링 됨  */}
-          {/* <Suspense fallback={<p>Loading...</p>}> */}
-          <LotationChampion />
-          {/* </Suspense> */}
-          {/* <Test></Test> */}
         </ContentTop>
       </Flex>
     </div>
