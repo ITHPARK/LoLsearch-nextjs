@@ -51,6 +51,7 @@ export const fetchSummoner = async ({
     return data
   } catch (error) {
     console.error('데이터 불러오기에 실패하였습니다.', error)
+    notFound()
     throw error
   }
 }
@@ -68,6 +69,7 @@ export const fetchSummonerInfo = async (summonerPuuid: string) => {
 
     //잘못된 api 요청일 때
     if (!response.ok) {
+      notFound()
       throw new Error('데이터 불러오기 실패')
     }
 
@@ -75,7 +77,7 @@ export const fetchSummonerInfo = async (summonerPuuid: string) => {
     return data
   } catch (error) {
     console.error('데이터 불러오기에 실패하였습니다.', error)
-    throw error
+    notFound()
   }
 }
 
@@ -92,12 +94,14 @@ export const fetchSummonerRank = async (summonerId: string) => {
 
     //잘못된 api 요청일 때
     if (!response.ok) {
+      notFound()
       throw new Error('데이터 불러오기 실패')
     }
 
     const data = await response.json()
     return data
   } catch (error) {
+    notFound()
     console.error('데이터 불러오기에 실패하였습니다.', error)
     throw error
   }

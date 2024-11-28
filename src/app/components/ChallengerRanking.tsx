@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useEffect, useRef } from 'react'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import { Navigation } from 'swiper/modules'
 import Flex from '@/app/components/shared/Flex'
@@ -20,6 +20,14 @@ const fetchChallengerRanking = async () => {
 
   return response.data
 }
+
+// const fetchTest = async () => {
+//   const response = await axios.get('/api/test')
+
+//   console.log(response.data)
+
+//   return response.data
+// }
 
 const ChallengerRanking = () => {
   const router = useRouter()
@@ -120,6 +128,7 @@ const ChallengerRanking = () => {
           <IoMdArrowDropright size={24} />
         </button>
       </Flex>
+      {/* <button onClick={fetchTest}>123123123213</button> */}
     </Flex>
   )
 }

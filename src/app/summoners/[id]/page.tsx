@@ -36,33 +36,39 @@ const Summoner = async ({ params }: { params: { id: string } }) => {
 
   return (
     <>
-      <ContentTop>
-        <Flex align="end" className="gap-[10px]">
-          <ProfileBox className="w-[80px] h-[80px]">
-            <ImageBox
-              src={`http://ddragon.leagueoflegends.com/cdn/14.22.1/img/profileicon/${summonerInfo.profileIconId}.png`}
-            />
-            <Text
-              size="t1"
-              className="px-[5px] py-[3px] absolute right-[5px] bottom-[5px] bg-[#000] rounded-[3px]"
-            >
-              {summonerInfo.summonerLevel}
-            </Text>
-          </ProfileBox>
-          <Flex align="end" className="gap-[5px]">
-            <Text size="t3" weight="bold" className="mr-[5px]">
-              {summonerData.gameName}
-            </Text>
-            <Text size="t2" weight="light">
-              #{summonerData.tagLine}
-            </Text>
+      <div className="py-[30px] bg-white">
+        <ContentTop className="mx-auto w-[1080px]">
+          <Flex align="end" className="gap-[10px]">
+            <ProfileBox className="w-[80px] h-[80px]">
+              <ImageBox
+                src={`http://ddragon.leagueoflegends.com/cdn/14.22.1/img/profileicon/${summonerInfo.profileIconId}.png`}
+              />
+              <Text
+                size="t1"
+                className="px-[5px] py-[3px] absolute right-[5px] bottom-[5px] bg-[#000] rounded-[3px]"
+              >
+                {summonerInfo.summonerLevel}
+              </Text>
+            </ProfileBox>
+            <Flex align="end" className="gap-[5px]">
+              <Text size="t3" weight="bold" className="mr-[5px] text-[#333]">
+                {summonerData.gameName}
+              </Text>
+              <Text size="t2" weight="light" className="text-[#333]">
+                #{summonerData.tagLine}
+              </Text>
+            </Flex>
           </Flex>
-        </Flex>
 
-        <SummonerRank summonerRank={summonerRank} />
-      </ContentTop>
+          <SummonerRank summonerRank={summonerRank} />
+        </ContentTop>
+      </div>
 
-      <MatchList playerPuuid={summonerData.puuid} />
+      <div className=" bg-[#000]">
+        <ContentTop className="pt-[50px] mx-auto w-[1080px]">
+          <MatchList playerPuuid={summonerData.puuid} />
+        </ContentTop>
+      </div>
     </>
   )
 }

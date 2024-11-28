@@ -13,7 +13,7 @@ const AllMatch = ({ matchIds }: AllMatchProps) => {
   //매치가 로딩줄일 때
 
   return (
-    <Flex direction="col" className="gap-[5px]">
+    <Flex direction="col" className="gap-[10px]">
       {matchIds.map((item: string, index: number) => {
         return <MatchLow key={index} matchid={item} />
       })}

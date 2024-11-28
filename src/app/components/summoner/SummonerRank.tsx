@@ -28,7 +28,7 @@ const SummonerRank = ({ summonerRank }: SummonerRankProps) => {
   return (
     <Flex className="mt-[30px]">
       <Flex className="p-[15px] gap-[20px] bg-[#363742] rounded-[5px] ">
-        <div>
+        <div className="flex flex-col justify-center">
           <div className="w-[150px] h-[150px]">
             {summonerRank.length > 0 ? (
               <ImageBox src={`/tier/${summonerRank[0].tier}.png`} />

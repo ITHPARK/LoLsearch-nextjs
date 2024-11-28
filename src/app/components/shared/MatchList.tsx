@@ -1,7 +1,6 @@
 'use client'
 
 import React, { useEffect } from 'react'
-import ContentTop from '@/app/components/shared/ContentTop'
 import Tab from '@/app/components/shared/Tab'
 import AllMatch from '../matches/AllMatch'
 
@@ -36,32 +35,28 @@ const MatchList = ({ playerPuuid }: MatchListProps) => {
 
   if (matchIdsLoading) {
     return (
-      <ContentTop>
-        <Tab
-          labels={['전체', '솔로랭크']}
-          components={{
-            일반: <TabSkeleton />,
-            랭크: <TabSkeleton />,
-          }}
-        />
-      </ContentTop>
+      <Tab
+        labels={['전체', '솔로랭크']}
+        components={{
+          일반: <TabSkeleton />,
+          랭크: <TabSkeleton />,
+        }}
+      />
     )
   }
 
   return (
-    <ContentTop>
-      <Tab
-        labels={['전체', '솔로랭크']}
-        components={{
-          일반: <AllMatch matchIds={matchIds ?? []} />,
-          랭크: <div />,
-        }}
-        buttonClass="px-[15px] py-[10px]  rounded-tl-[5px] rounded-tr-[5px]"
-        pageClass="p-[15px] bg-[#363742] overflow-hidden rounded-tr-[10px] rounded-bl-[5px] rounded-br-[5px]"
-        focusColor="#363742"
-        unFocusColor="#24252F"
-      />
-    </ContentTop>
+    <Tab
+      labels={['전체', '솔로랭크']}
+      components={{
+        일반: <AllMatch matchIds={matchIds ?? []} />,
+        랭크: <div />,
+      }}
+      buttonClass="px-[15px] py-[10px]  rounded-tl-[5px] rounded-tr-[5px]"
+      pageClass="overflow-hidden rounded-tr-[10px] rounded-bl-[5px] rounded-br-[5px]"
+      focusColor="#363742"
+      unFocusColor="#24252F"
+    />
   )
 }
 
